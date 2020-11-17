@@ -107,7 +107,7 @@ public class VentanaInicial {
 		p5.setCenter(txtp5);
 		txtp5.setOnMouseClicked( new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				if(contador == 4) {
+				if(contador == 5) {
 					contador = 0;
 					txtp5.setText(info_desarrolladores.get(contador));
 					contador ++;
