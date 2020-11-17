@@ -1,7 +1,9 @@
 package InterfasGrafica;
 
-import InterfasGrafica.Ventanas.VentanaSaludo;
+import InterfasGrafica.Ventanas.VentanaInicial;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -18,11 +20,15 @@ public class interfasGrafica extends Application{
 
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Cine Stewin");
-        primaryStage.setScene(new VentanaSaludo().getEscenaSaludo());
+        primaryStage.setScene(new VentanaInicial().getEscenaSaludo());
         primaryStage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+    
+    
+ 
+    
 }
