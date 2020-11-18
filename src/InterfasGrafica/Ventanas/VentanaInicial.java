@@ -127,7 +127,7 @@ public class VentanaInicial {
 		
 
 
-        escenaSaludo = new Scene(escena,500,500);
+        escenaSaludo = new Scene(escena,700,700);
     }
 
     public Scene getEscenaSaludo(){
