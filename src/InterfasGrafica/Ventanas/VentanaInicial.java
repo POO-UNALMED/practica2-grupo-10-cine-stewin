@@ -33,7 +33,7 @@ public class VentanaInicial {
     
     static {
     	// Agregamos la hoja de vida de cada integrante del grupo a la LinkedList info_desarrolladores.
-    	info_desarrolladores.add("Informacion de los Desarrolladores" + "\n" + "                 - Click Aqu� -");
+    	info_desarrolladores.add("Informacion de los Desarrolladores" + "\n" + "                 - Click Aqui -");
     	info_desarrolladores.add("Desarrollador: Amilder Ospina." + "\n" + "Edad: 20." + "\n" + "Ocupacion: Estudiante de Ingenieria de Sistemas" + "\n" + "Institucion: Universidad Nacional de Colombia");
     	info_desarrolladores.add("Desarrollador: Andres Molano." + "\n" + "Edad: 20." + "\n" + "Ocupacion: Estudiante de Ingenieria de Sistemas" + "\n" + "Institucion: Universidad Nacional de Colombia");
     	info_desarrolladores.add("Desarrollador: Alejandro Sepulveda." + "\n" + "Edad: 20." + "\n" + "Ocupacion: Estudiante de Ingenieria de Sistemas" + "\n" + "Institucion: Universidad Nacional de Colombia");
