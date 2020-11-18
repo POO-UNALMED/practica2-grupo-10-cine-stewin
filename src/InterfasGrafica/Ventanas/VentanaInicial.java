@@ -33,11 +33,11 @@ public class VentanaInicial {
     
     static {
     	// Agregamos la hoja de vida de cada integrante del grupo a la LinkedList info_desarrolladores.
-    	info_desarrolladores.add("Información de los Desarrolladores" + "\n" + "                 - Click Aquí -");
-    	info_desarrolladores.add("Desarrollador: Amilder Ospina." + "\n" + "Edad: 20 Años." + "\n" + "Ocupación: Estudiante de Ingeniería de Sistemas" + "\n" + "Institución: Universidad Nacional de Colombia");
-    	info_desarrolladores.add("Desarrollador: Andres Molano." + "\n" + "Edad: 40 Años." + "\n" + "Ocupación: Capucho" + "\n" + "Institución: Universidad Nacional de Colombia");
-    	info_desarrolladores.add("Desarrollador: Alejandro Sepulveda." + "\n" + "Edad: 20 Años." + "\n" + "Ocupación: Estudiante de Ingeniería de Sistemas" + "\n" + "Institución: Universidad Nacional de Colombia");
-    	info_desarrolladores.add("Desarrollador: Gelier Moreno." + "\n" + "Edad: 23 Años." + "\n" + "Ocupación: Estudiante de Ingeniería de Sistemas" + "\n" + "Institución: Universidad Nacional de Colombia");
+    	info_desarrolladores.add("Informacion de los Desarrolladores" + "\n" + "                 - Click Aquï¿½ -");
+    	info_desarrolladores.add("Desarrollador: Amilder Ospina." + "\n" + "Edad: 20." + "\n" + "Ocupacion: Estudiante de Ingenieria de Sistemas" + "\n" + "Institucion: Universidad Nacional de Colombia");
+    	info_desarrolladores.add("Desarrollador: Andres Molano." + "\n" + "Edad: 20." + "\n" + "Ocupacion: Estudiante de Ingenieria de Sistemas" + "\n" + "Institucion: Universidad Nacional de Colombia");
+    	info_desarrolladores.add("Desarrollador: Alejandro Sepulveda." + "\n" + "Edad: 20." + "\n" + "Ocupacion: Estudiante de Ingenieria de Sistemas" + "\n" + "Institucion: Universidad Nacional de Colombia");
+    	info_desarrolladores.add("Desarrollador: Gelier Moreno." + "\n" + "Edad: 23." + "\n" + "Ocupacion: Estudiante de Ingenieria de Sistemas" + "\n" + "Institucion: Universidad Nacional de Colombia");
     }
     
     
@@ -52,7 +52,7 @@ public class VentanaInicial {
    		VBox p2 = new VBox();
    		p2.setPadding(padding);
    		
-   		// Creación de las zonas (BorderPane) p3 - p6.
+   		// Creacion de las zonas (BorderPane) p3 - p6.
    		BorderPane p3 = new BorderPane();
 		BorderPane p4 = new BorderPane();
 		BorderPane p5 = new BorderPane();
@@ -91,7 +91,7 @@ public class VentanaInicial {
 		// Agregamos p1 y p2 a la escena.
 		base.getChildren().addAll(p1,p2);
 		
-		// Sección P3
+		// Seccion P3
 		p3.setStyle("-fx-border-color: black");
 		p3.setPadding(padding);
 		p3.setCenter(new Text("Bienvenidos a la Aplicacion" + "\n" +  " de Escritorio de Cine Stewin"));
