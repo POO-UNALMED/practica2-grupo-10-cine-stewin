@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,7 +13,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.util.Vector;
 
@@ -42,17 +42,24 @@ public class interfasGrafica extends Application{
         //Estas definimos las tres subregiones que tendra cada region(Izquierda derecha)
         Label unoIzquierda = new Label();
         Label dosIzquierda = new Label();
-        Label tresIzquierda = new Label("Aca debe ir el espacio para ingresar");
-        tresIzquierda.setMinWidth(350);
-        tresIzquierda.setMinHeight(300);
-        tresIzquierda.setStyle("-fx-border-color: red");
+        //Label tresIzquierda = new Label("Aca debe ir el espacio para ingresar");
+
+        //La parte tresIzquierda debe ser un GridPane para poder organizar todos los objetos
+        GridPane tresIzquierda1 = new GridPane();
+
+        //tresIzquierda.setMinWidth(350);
+        //tresIzquierda.setMinHeight(300);
+        tresIzquierda1.setMinHeight(350);
+        tresIzquierda1.setMinHeight(300);
+        //tresIzquierda.setStyle("-fx-border-color: red");
+        tresIzquierda1.setStyle("-fx-border-color: red");
         Label unoDerecha = new Label("Nuestros datos");
         Label dosDerecha = new Label("");
 
         //Aca ponemos cada una de los subregiones en su respectivo espacio
         izquierda.add(unoIzquierda,0,0);
         izquierda.add(dosIzquierda,0,1);
-        izquierda.add(tresIzquierda,0,2);
+        izquierda.add(tresIzquierda1,0,2);
         izquierda.setAlignment(Pos.CENTER_LEFT);
         derecha.add(unoDerecha,0,0);
         derecha.add(dosDerecha,0,1);
@@ -129,6 +136,39 @@ public class interfasGrafica extends Application{
             public void handle(MouseEvent event) {
                 contadorCines++;
                 dosDerecha.setGraphic(autoresVect.get((contadorCines%4)));
+            }
+        });
+
+        //Agregamos los dos botones que iran en la parte tres de la izquierda
+        //Boton para registrarse
+        Button registrar = new Button("Registrarse");
+
+        //Boton para entrar
+        Button entrar = new Button("Entrar");
+
+        //Centramos los botones
+        tresIzquierda1.setAlignment(Pos.BASELINE_CENTER);
+
+        //Ponemos los botones en su respectiva posiciion
+        tresIzquierda1.add(entrar,0,0);
+        tresIzquierda1.add(registrar,0,1);
+
+        //Podemos la parte tres con fondo negro
+        tresIzquierda1.setStyle("-fx-background-color: BLACK;");
+
+        //Evento que ocurre a la hora de registrar un usuario
+        registrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("Intentando registrar");
+            }
+        });
+
+        //Evento que ocurre a la hora de ingreso de un usuario
+        entrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("Intentando entrar");
             }
         });
 
