@@ -35,8 +35,8 @@ public class Funcion implements Serializable {
         LocalDate hoy = LocalDate.now();
         int dia = hoy.getDayOfMonth();
         int mes = hoy.getMonthValue();
-        int año = hoy.getYear();
-        this.fecha = LocalDateTime.of(año, mes, dia, hora, 0);
+        int anio = hoy.getYear();
+        this.fecha = LocalDateTime.of(anio, mes, dia, hora, 0);
     }
 
     public Funcion(String nombre, int sala, int hora) {
@@ -50,8 +50,8 @@ public class Funcion implements Serializable {
         LocalDate hoy = LocalDate.now();
         int diaa = hoy.getDayOfMonth();
         int mess = hoy.getMonthValue();
-        int añoo = hoy.getYear();
-        this.fecha = LocalDateTime.of(añoo, mess, dia, hora, 0);
+        int anioo = hoy.getYear();
+        this.fecha = LocalDateTime.of(anioo, mess, dia, hora, 0);
     }
     //Metodos GET and SET****
 

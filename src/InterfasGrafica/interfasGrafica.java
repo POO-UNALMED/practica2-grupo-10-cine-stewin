@@ -1,30 +1,25 @@
 package InterfasGrafica;
 
+import InterfasGrafica.Ventanas.CrearMenuRegistro;
+import baseDatos.Escribir;
+import baseDatos.Leer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
 import java.io.FileInputStream;
 import java.util.Vector;
-
-import static javax.swing.GroupLayout.Alignment.*;
 
 
 public class interfasGrafica extends Application{
@@ -33,6 +28,10 @@ public class interfasGrafica extends Application{
     int contadorCines = 0;
     int contadorAutores = 0;
 
+    //Metodo que se ejecuta al principio para leer la base de datos
+    public void init(){
+        Leer.Leer();
+    }
     public void start(Stage primaryStage) throws Exception {
         String autor0 = ("Desarrolladores \nSepulveda Daniel Alejandro\ndasepulvedao@unal.edu.co");
         String autor1 = ("Desarrolladores \nOspina Amilder Stewin\naospinato@unal.edu.co");
@@ -90,6 +89,8 @@ public class interfasGrafica extends Application{
         //Ponemos el gridPane izquierdo y dercho en su lugar correspondondiente
         fondoPrincipal.getChildren().add(izquierda);
         fondoPrincipal.getChildren().add(derecha);
+        fondoPrincipal.setMinWidth(700);
+        fondoPrincipal.setMinHeight(700);
 
         //RegionUno Izquierda
         //Conseguimos la imagenen de Bienvenida
@@ -153,7 +154,6 @@ public class interfasGrafica extends Application{
 
         //Siempre por defecto mostramos la imagen 0
         dosDerecha.setGraphic(autoresVect.get(0));
-
         dosDerecha.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -174,12 +174,23 @@ public class interfasGrafica extends Application{
         Button entrar = new Button("Entrar");
 
         //Centramos los botones
-        tresIzquierda1.setAlignment(Pos.BASELINE_CENTER);
+        tresIzquierda1.setAlignment(Pos.CENTER);
+        tresIzquierda1.setVgap(10);
+        tresIzquierda1.setHgap(10);
+
+        //Definimos el tamano del boton registrar
+        registrar.setMinWidth(100);
+        registrar.setMinHeight(50);
+
+        //Definimos el tamano del boton entrar
+        entrar.setMinWidth(100);
+        entrar.setMinHeight(50);
+
 
         //Ponemos los botones en su respectiva posiciion
+
         tresIzquierda1.add(entrar,0,0);
         tresIzquierda1.add(registrar,0,1);
-
         //Podemos la parte tres con fondo negro
         tresIzquierda1.setStyle("-fx-background-color: BLACK");
 
@@ -187,7 +198,8 @@ public class interfasGrafica extends Application{
         registrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("Intentando registrar");
+                CrearMenuRegistro.showing("Registro");
+                /*Cerramos la pagina donde estamos y debemos abrir una nueva pagina de todas las opciones*/
             }
         });
 
@@ -215,12 +227,8 @@ public class interfasGrafica extends Application{
                 textoAutores.setText(datosAutores.get(contadorAutores%4));
                 unoDerecha.getChildren().add(textoAutores);
                 dosDerecha.setGraphic(autoresVect.get((contadorAutores%4)));
-
-
             }
         });
-
-
 
 
         //Le damos el titulo a la escena
@@ -229,7 +237,17 @@ public class interfasGrafica extends Application{
         //Le pasamos la pantalla de inicio y el tamaño por defecto
         primaryStage.setScene(new Scene(fondoPrincipal,700,700));
 
+        /*De esta forma el tamano minimo de la ventana sera este, asi no se podra deformar
+          Si el profesor la pone mas pequeña :v */
+        primaryStage.setMinWidth(716);
+        primaryStage.setMinHeight(716);
+
         //Mostramos
         primaryStage.show();
+    }
+
+    //Metodo que se ejecuta al principio para guardar los datos en la BaseDeDatos
+    public void stop(){
+        Escribir.Escribir();
     }
 }
