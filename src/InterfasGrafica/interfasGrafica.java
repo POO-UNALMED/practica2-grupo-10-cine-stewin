@@ -6,22 +6,42 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import java.io.FileInputStream;
 import java.util.Vector;
+
+import static javax.swing.GroupLayout.Alignment.*;
 
 
 public class interfasGrafica extends Application{
     Image imagenes;
+    Vector<String> datosAutores = new Vector<String>(); /*Tendremos los autores aca */
     int contadorCines = 0;
+    int contadorAutores = 0;
 
     public void start(Stage primaryStage) throws Exception {
+        String autor0 = ("Desarrolladores \nSepulveda Daniel Alejandro\ndasepulvedao@unal.edu.co");
+        String autor1 = ("Desarrolladores \nOspina Amilder Stewin\naospinato@unal.edu.co");
+        String autor2 = ("Desarrolladores \nMoreno Gelier Esteban\ngemorenog@unal.edu.co");
+        String autor3 = ("Desarrolladores \nMolano Kevin Andres\nkmolano@unal.edu.co");
+        datosAutores.add(autor0);
+        datosAutores.add(autor1);
+        datosAutores.add(autor2);
+        datosAutores.add(autor3);
         Vector<ImageView> cinesVect = new Vector<ImageView>(); /*arreglo donde se guardaran los cines*/
         Vector<ImageView> autoresVect = new Vector<ImageView>(); /*Imagenes de nosotros*/
 
@@ -53,7 +73,9 @@ public class interfasGrafica extends Application{
         tresIzquierda1.setMinHeight(300);
         //tresIzquierda.setStyle("-fx-border-color: red");
         tresIzquierda1.setStyle("-fx-border-color: red");
-        Label unoDerecha = new Label("Nuestros datos");
+        GridPane unoDerecha = new GridPane ();
+        //Este label sera el encargado de mostrar nuestra informacion
+        Label textoAutores = new Label(datosAutores.get(0));
         Label dosDerecha = new Label("");
 
         //Aca ponemos cada una de los subregiones en su respectivo espacio
@@ -111,6 +133,7 @@ public class interfasGrafica extends Application{
         unoDerecha.setMinWidth(350);
         unoDerecha.setMinHeight(200);
         unoDerecha.setStyle("-fx-border-color: red");
+        unoDerecha.setStyle("-fx-background-color: BLACK");
 
         //RegionDos Derecha (Aca deben ir nuestras imagenes) 500px de profundo
         //En esta parte deben ir imagenes con nuestras fotos y eso, pero por ahora no tengo tiempo de editarlas
@@ -134,8 +157,12 @@ public class interfasGrafica extends Application{
         dosDerecha.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                contadorCines++;
-                dosDerecha.setGraphic(autoresVect.get((contadorCines%4)));
+                contadorAutores++;
+                dosDerecha.setGraphic(autoresVect.get((contadorAutores%4)));
+                unoDerecha.getChildren().remove(0);
+                textoAutores.setText(datosAutores.get(contadorAutores%4));
+                unoDerecha.getChildren().add(textoAutores);
+                dosDerecha.setGraphic(autoresVect.get((contadorAutores%4)));
             }
         });
 
@@ -154,7 +181,7 @@ public class interfasGrafica extends Application{
         tresIzquierda1.add(registrar,0,1);
 
         //Podemos la parte tres con fondo negro
-        tresIzquierda1.setStyle("-fx-background-color: BLACK;");
+        tresIzquierda1.setStyle("-fx-background-color: BLACK");
 
         //Evento que ocurre a la hora de registrar un usuario
         registrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -171,6 +198,28 @@ public class interfasGrafica extends Application{
                 System.out.println("Intentando entrar");
             }
         });
+        textoAutores.setTextFill(Color.WHITE);
+        textoAutores.setFont(new Font("Arial Black",20));
+        textoAutores.setEffect(new Glow(1.7f));
+
+        //Area uno a la derecha
+        unoDerecha.getChildren().add((textoAutores));
+        unoDerecha.setAlignment(Pos.CENTER);
+
+        //Evento que ocurre cuando le dan clic en nuestras hojas de vida
+        textoAutores.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                contadorAutores++;
+                unoDerecha.getChildren().remove(0);
+                textoAutores.setText(datosAutores.get(contadorAutores%4));
+                unoDerecha.getChildren().add(textoAutores);
+                dosDerecha.setGraphic(autoresVect.get((contadorAutores%4)));
+
+
+            }
+        });
+
 
 
 
