@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 public class Ingreso extends VentanaGenerica{
     public static void showing(Stage stage){
+        pantallaInicio = stage;
         //Se crean los diferentes elementos con los que se van a trabajar
         Stage ventanaIngreso = new Stage();
         BorderPane panelPrincipal = new BorderPane();
@@ -76,12 +77,12 @@ public class Ingreso extends VentanaGenerica{
                 //Se comprueba la identificacion de la persona y dependiendo de eso, se dedice a que ventana se llevara
                 if(empleado.comprobarRegistro(Integer.parseInt(identificacionEntra.getText()))){
                     ventanaIngreso.close();
+                    stage.close();
                     try {
-                        pantallaInicio.start(new Stage());
+                        pantallaUsuario.start(new Stage());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     //Debo llemar al siguiente menu ;'v
                 }else{
                     VentanaInformacion.showing("Informacion","Identificacion incorrecta","Aceptar");

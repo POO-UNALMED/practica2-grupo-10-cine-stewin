@@ -37,6 +37,8 @@ public class PantallaInicial extends Application{
         System.out.println(BaseDeDatos.getClientes().size()); //--------------------------------
     }
     public void start(Stage primaryStage) throws Exception {
+
+        //Creacion de diferentes componentes
         String autor0 = ("Desarrolladores \nSepulveda Daniel Alejandro\ndasepulvedao@unal.edu.co");
         String autor1 = ("Desarrolladores \nOspina Amilder Stewin\naospinato@unal.edu.co");
         String autor2 = ("Desarrolladores \nMoreno Gelier Esteban\ngemorenog@unal.edu.co");
@@ -236,7 +238,7 @@ public class PantallaInicial extends Application{
 
 
         //Le damos el titulo a la escena
-        primaryStage.setTitle("Casa");
+        primaryStage.setTitle("Cine Stewin");
 
         //Le pasamos la pantalla de inicio y el tamaño por defecto
         primaryStage.setScene(new Scene(fondoPrincipal,700,700));
