@@ -1,6 +1,8 @@
 package InterfasGrafica;
 
 import InterfasGrafica.Ventanas.CrearMenuRegistro;
+import InterfasGrafica.Ventanas.Ingreso;
+import baseDatos.BaseDeDatos;
 import baseDatos.Escribir;
 import baseDatos.Leer;
 import javafx.application.Application;
@@ -22,7 +24,7 @@ import java.io.FileInputStream;
 import java.util.Vector;
 
 
-public class interfasGrafica extends Application{
+public class PantallaInicial extends Application{
     Image imagenes;
     Vector<String> datosAutores = new Vector<String>(); /*Tendremos los autores aca */
     int contadorCines = 0;
@@ -31,6 +33,8 @@ public class interfasGrafica extends Application{
     //Metodo que se ejecuta al principio para leer la base de datos
     public void init(){
         Leer.Leer();
+        BaseDeDatos.relacionar();
+        System.out.println(BaseDeDatos.getClientes().size()); //--------------------------------
     }
     public void start(Stage primaryStage) throws Exception {
         String autor0 = ("Desarrolladores \nSepulveda Daniel Alejandro\ndasepulvedao@unal.edu.co");
@@ -207,7 +211,7 @@ public class interfasGrafica extends Application{
         entrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("Intentando entrar");
+                Ingreso.showing(primaryStage);
             }
         });
         textoAutores.setTextFill(Color.WHITE);
@@ -240,7 +244,7 @@ public class interfasGrafica extends Application{
         /*De esta forma el tamano minimo de la ventana sera este, asi no se podra deformar
           Si el profesor la pone mas pequeña :v */
         primaryStage.setMinWidth(716);
-        primaryStage.setMinHeight(716);
+        primaryStage.setMinHeight(740);
 
         //Mostramos
         primaryStage.show();

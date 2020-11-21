@@ -1,41 +1,29 @@
 package InterfasGrafica.Ventanas;
 
-import InterfasGrafica.interfasGrafica;
-import baseDatos.BaseDeDatos;
 import gestorAplicacion.master.Empleado;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.Optional;
 import java.util.Vector;
-import java.util.concurrent.TimeUnit;
 
-import static javafx.scene.control.ButtonType.*;
-
-public class CrearMenuRegistro {
+public class CrearMenuRegistro extends VentanaGenerica{
     public static void showing(String title){
         //Almacenaremos los labeles aca para darles un poco de estilo posteriormente
         Vector<Label> labeles = new Vector<Label>();
-
         //Creamos el stage
         Stage ventanaRegistro = new Stage();
 
-        //Esto es para
+        //Esto es para que no puedan interactuar con otras ventanas mientras este esta abierta
         ventanaRegistro.initModality(Modality.APPLICATION_MODAL);
 
         //Le pasamos el titulo
@@ -49,7 +37,7 @@ public class CrearMenuRegistro {
         Label lbl = new Label("Por favor ingrese sus datos");
 
         //Boton para poder cerrar la aplicacion
-        Button cancelar = new Button("Canelar");
+        Button cancelar = new Button("Cancelar");
         cancelar.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -68,6 +56,15 @@ public class CrearMenuRegistro {
         aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                //Comprobamos que el usuario no este registrado en la base de datos y dependiendo del caso, imprimimos el mensaje
+                if(empleado.comprobarRegistro(Integer.parseInt(identificacionEntra.getText()))){
+                    ventanaRegistro.close();
+                    VentanaInformacion.showing("Informacion","Usuario ya registrado","Aceptar");
+                }else{
+                    Empleado.registarCliente(Integer.parseInt(identificacionEntra.getText()),nombreEntra.getText(),correoEntra.getText(),direccionEntra.getText());
+                    ventanaRegistro.close();
+                    VentanaInformacion.showing("Informacion", "Usuario registrado correctamente","Aceptar");
+                }
             }
         });
 
