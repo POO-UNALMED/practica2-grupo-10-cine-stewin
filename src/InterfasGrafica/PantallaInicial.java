@@ -256,4 +256,8 @@ public class PantallaInicial extends Application{
     public void stop(){
         Escribir.Escribir();
     }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
