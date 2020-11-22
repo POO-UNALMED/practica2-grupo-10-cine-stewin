@@ -1,5 +1,6 @@
 package InterfasGrafica.Ventanas;
-
+//105
+import InterfasGrafica.FieldPanel;
 import gestorAplicacion.master.Empleado;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,48 +23,41 @@ public class Ingreso extends VentanaGenerica{
         //Se crean los diferentes elementos con los que se van a trabajar
         Stage ventanaIngreso = new Stage();
         BorderPane panelPrincipal = new BorderPane();
-        GridPane panelSegundario = new GridPane();
-        Label identificacion = new Label("Identificacion: ");
         Label titulo = new Label("Por favor ingrese su identificacion");
-        TextField identificacionEntra = new TextField();
-        Button ingreso = new Button("Entrar");
         Button cancelar = new Button("Cancelar");
-        GridPane panelInferior = new GridPane();
 
         //Damos los estilos que usaremos
-        identificacionEntra.setAlignment(Pos.CENTER);
         panelPrincipal.setStyle("-fx-background-color: BLACK");
-        identificacion.setFont(new Font("Arial Black",15));
-        identificacion.setTextFill(Color.WHITE);
         titulo.setFont(new Font("Arial Black",15));
         titulo.setTextFill(Color.WHITE);
 
-        //Ingresamos los botones al panel inferior y los acomodamos
-
-        panelInferior.add(ingreso,0,0);
-        panelInferior.add(cancelar,1,0);
-        panelInferior.setAlignment(Pos.TOP_CENTER);
-        BorderPane.setMargin(panelInferior,new Insets(0,0,30,0));
-        panelInferior.setHgap(10);
-
         //Ponemos el titulo, le damos margen y lo centramos
         panelPrincipal.setTop(titulo);
-        BorderPane.setMargin(titulo,new Insets(5,0,-5,0));
+        BorderPane.setMargin(titulo,new Insets(5,0,15,0));
         BorderPane.setAlignment(titulo, Pos.CENTER);
-        panelPrincipal.setBottom(panelInferior);
-
-        //Ponemos los componentes del panel segundario
-        panelSegundario.add(identificacion,0,0);
-        panelSegundario.add(identificacionEntra,1,0);
-        panelSegundario.setAlignment(Pos.CENTER);
-        panelPrincipal.setCenter(panelSegundario);
 
         //Tamaño no cambiante
         ventanaIngreso.setMinWidth(416);
-        ventanaIngreso.setMinHeight(176);
+        ventanaIngreso.setMinHeight(196);
 
         //Esto es para que no puedan interactuar con otras ventanas mientras este esta abierta
         ventanaIngreso.initModality(Modality.APPLICATION_MODAL);
+
+        //Usamos FieldPanel para pedir la informacion y trabajar con ella
+        String[] criterios = new String[] {"Identificacion"};
+        String[] valores = new String[] {""};
+        boolean[] habilitados = new boolean[] {};
+        FieldPanel fieldPane = new FieldPanel("Criterios",criterios,"Valores",valores,habilitados);
+        fieldPane.setStyle("-fx-background-color: BLACK");
+
+        //Un gridpane para poder centrar nuestro FieldPane
+        GridPane auxiliar = new GridPane();
+        auxiliar.add(fieldPane,0,0);
+        auxiliar.add(cancelar,0,1);
+        auxiliar.setVgap(8);
+        auxiliar.setHgap(8);
+        auxiliar.setAlignment(Pos.TOP_CENTER);
+        panelPrincipal.setCenter(auxiliar);
 
         //Creamos la escena
         Scene escena = new Scene(panelPrincipal,400,130);
@@ -71,11 +65,17 @@ public class Ingreso extends VentanaGenerica{
         ventanaIngreso.show();
 
         //Evento que me define que pasa cuando se oprime el boton ingresar
-        ingreso.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        fieldPane.aceptar.setMinWidth(62);
+        fieldPane.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                try {
+                    fieldPane.GuardarDatos();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 //Se comprueba la identificacion de la persona y dependiendo de eso, se dedice a que ventana se llevara
-                if(empleado.comprobarRegistro(Integer.parseInt(identificacionEntra.getText()))){
+                if(empleado.comprobarRegistro(Integer.parseInt(valores[0]))){
                     ventanaIngreso.close();
                     stage.close();
                     try {
@@ -83,9 +83,8 @@ public class Ingreso extends VentanaGenerica{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    //Debo llemar al siguiente menu ;'v
                 }else{
-                    VentanaInformacion.showing("Informacion","Identificacion incorrecta","Aceptar");
+                    VentanaInformacion.showing("Informacion","Identificacion incorrecta","Aceptar",400,100);
                     ventanaIngreso.close();
                 }
             }
@@ -97,8 +96,5 @@ public class Ingreso extends VentanaGenerica{
                 ventanaIngreso.close();
             }
         });
-
-
-
     }
 }

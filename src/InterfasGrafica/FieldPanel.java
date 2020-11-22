@@ -38,8 +38,8 @@ public class FieldPanel extends Pane {
         this.habilitado = habilitado;
 
         GridPane grid = ((GridPane) this.getChildren().get(0));
-        grid.setVgap(5);
-        grid.setHgap(5);
+        grid.setVgap(8);
+        grid.setHgap(8);
         grid.setAlignment(Pos.CENTER);
 
         for(int i = 0; i < criterios.length;i++) {
@@ -48,6 +48,7 @@ public class FieldPanel extends Pane {
             label.setFont(new Font("Arial Black",15));
             grid.add(label, 0, i);
             TextField s = new TextField("");
+            s.setAlignment(Pos.CENTER);
             try {
                 s.setText(valores[i]);
                 grid.add(s, 1, i);

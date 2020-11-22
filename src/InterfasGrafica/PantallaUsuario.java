@@ -37,8 +37,10 @@ public class PantallaUsuario  extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //Creacion de los diferentes componentes que vamos a usar
-        BorderPane panelPrincipal = new BorderPane();
+        VBox panelPrincipal = new VBox();
+        BorderPane panelEstructura = new BorderPane();
         Label titulo = new Label("Hola mundo");
+
         //Creamos los diferentes menus que se van a usat
         MenuBar menu =  new MenuBar();
         Menu archivo = new Menu("Archivo");
@@ -47,6 +49,7 @@ public class PantallaUsuario  extends Application {
         MenuItem usuario = new MenuItem("Usuario");
         MenuItem salir = new MenuItem("Salir");
         MenuItem acercaDe = new MenuItem("Acerca de");
+
         /*Definir demas elementos del menu procesos*/
         //Definimos los conponentes de cada menu
         menu.getMenus().add(archivo);
@@ -63,21 +66,32 @@ public class PantallaUsuario  extends Application {
         panelPrincipal.minHeight(700);
         panelPrincipal.minWidth(700);
 
-        //Creamos la escena
-        //panel.getChildren().add(panelPrincipal);
-        Scene escenaPrincipal = new Scene(panelPrincipal,700,700);
+        //
+        titulo.setAlignment(Pos.CENTER);
+        panelPrincipal.getChildren().addAll(menu,titulo);
+        panelPrincipal.setAlignment(Pos.CENTER);
 
         //Ponemos todos los elementos en el panel principal y los acomodamos en su respectiva posicion
-        panelPrincipal.setTop(menu);
-        panelPrincipal.setCenter(titulo);
-        BorderPane.setMargin(titulo,new Insets(5,0,-5,0));
+        Label medio = new Label("Medio");
+        Label abajo = new Label("Abajo");
+        panelEstructura.setTop(panelPrincipal);
+        panelEstructura.setCenter(medio);
+        panelEstructura.setBottom(abajo);
+        BorderPane.setMargin(titulo,new Insets(5,0,10,0));
         BorderPane.setAlignment(titulo, Pos.CENTER);
+        BorderPane.setAlignment(medio,Pos.CENTER);
+        BorderPane.setAlignment(abajo,Pos.CENTER);
 
 
 
         //Metodos que me permiten ajustar las caracteristicas de primaryStage
-        primaryStage.setTitle("No se por ahora");
+        primaryStage.setTitle("Cliente: "+ Cliente.getClienteActual().getNombre());
         primaryStage.initModality(Modality.APPLICATION_MODAL);
+
+        //Creamos la escena
+        //panel.getChildren().add(panelPrincipal);
+        Scene escenaPrincipal = new Scene(panelEstructura,700,700);
+
         //Pasamos la escena al stage
         primaryStage.setScene(escenaPrincipal);
         primaryStage.show();
@@ -94,10 +108,21 @@ public class PantallaUsuario  extends Application {
             @Override
             public void handle(ActionEvent event) {
                 String usuario = Cliente.getClienteActual().toString();
-                VentanaInformacion.showing("Usuario",usuario,"Aceptar");
+                VentanaInformacion.showing("Usuario",usuario,"Aceptar",500,200);
             }
         });
-
-
+        acercaDe.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                StringBuilder mensaje = new StringBuilder();
+                mensaje.append("     DESARROLLADORES\n")
+                        .append("\nSepulveda Daniel Alejandro\n")
+                        .append("Ospina Amilder Stewin\n")
+                        .append("Moreno Gelier Esteban\n")
+                        .append("Molano Kevin Andres\n");
+                String usuario = Cliente.getClienteActual().toString();
+                VentanaInformacion.showing("Acerda de",mensaje.toString(),"Aceptar",500,220);
+            }
+        });
     }
 }

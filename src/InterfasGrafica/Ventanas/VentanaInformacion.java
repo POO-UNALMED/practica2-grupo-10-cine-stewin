@@ -16,7 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class VentanaInformacion {
-    public static void showing(String title, String mensaje, String nombreBoton){
+    public static void showing(String title, String mensaje, String nombreBoton,int ancho, int largo){
         //Se crea el estague, Pane, Label y el boton
         Stage ventanaInformacion = new Stage();
         ventanaInformacion.initModality(Modality.APPLICATION_MODAL);
@@ -44,9 +44,9 @@ public class VentanaInformacion {
         ventanaInformacion.setTitle(title);
 
         //Se crea la escena
-        Scene escena = new Scene(panelPrincipal,400,100);
-        ventanaInformacion.setMinWidth(416);
-        ventanaInformacion.setMinHeight(146);
+        Scene escena = new Scene(panelPrincipal,ancho,largo);
+        ventanaInformacion.setMinWidth(ancho+16);
+        ventanaInformacion.setMinHeight(largo+46);
 
         //Pasamos la escena y mostramos
         ventanaInformacion.setScene(escena);

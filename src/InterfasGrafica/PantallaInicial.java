@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.util.Vector;
 
-
 public class PantallaInicial extends Application{
     Image imagenes;
     Vector<String> datosAutores = new Vector<String>(); /*Tendremos los autores aca */
@@ -50,7 +49,6 @@ public class PantallaInicial extends Application{
         Vector<ImageView> cinesVect = new Vector<ImageView>(); /*arreglo donde se guardaran los cines*/
         Vector<ImageView> autoresVect = new Vector<ImageView>(); /*Imagenes de nosotros*/
 
-
         //Definimos la pantalla de inicio
         FlowPane fondoPrincipal = new FlowPane();
 
@@ -67,7 +65,6 @@ public class PantallaInicial extends Application{
         //Estas definimos las tres subregiones que tendra cada region(Izquierda derecha)
         Label unoIzquierda = new Label();
         Label dosIzquierda = new Label();
-        //Label tresIzquierda = new Label("Aca debe ir el espacio para ingresar");
 
         //La parte tresIzquierda debe ser un GridPane para poder organizar todos los objetos
         GridPane tresIzquierda1 = new GridPane();
@@ -112,7 +109,6 @@ public class PantallaInicial extends Application{
         //Centramos para que no se descuadre cuando se amplia
         fondoPrincipal.setAlignment(Pos.CENTER);
 
-
         //RegiosDos Izquierda
         //Debajo de la imagen de Bienvenida debemos tener una lista de imagenes que se cambia cada que dan clic sobre ella
         try{
@@ -142,10 +138,7 @@ public class PantallaInicial extends Application{
         unoDerecha.setStyle("-fx-border-color: red");
         unoDerecha.setStyle("-fx-background-color: BLACK");
 
-        //RegionDos Derecha (Aca deben ir nuestras imagenes) 500px de profundo
-        //En esta parte deben ir imagenes con nuestras fotos y eso, pero por ahora no tengo tiempo de editarlas
-        //El tamaño por si alguien quiere el 350x500px
-
+        //RegionDos Derecha (Aca deben ir nuestras imagenes)
         //Conseguimos todas las imagenes de nosotros
         try{
             for(int i=0; i<4;i++){
@@ -192,9 +185,7 @@ public class PantallaInicial extends Application{
         entrar.setMinWidth(100);
         entrar.setMinHeight(50);
 
-
         //Ponemos los botones en su respectiva posiciion
-
         tresIzquierda1.add(entrar,0,0);
         tresIzquierda1.add(registrar,0,1);
         //Podemos la parte tres con fondo negro
@@ -205,7 +196,7 @@ public class PantallaInicial extends Application{
             @Override
             public void handle(MouseEvent event) {
                 CrearMenuRegistro.showing("Registro");
-                /*Cerramos la pagina donde estamos y debemos abrir una nueva pagina de todas las opciones*/
+
             }
         });
 

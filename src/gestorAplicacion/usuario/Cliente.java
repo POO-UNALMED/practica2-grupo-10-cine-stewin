@@ -38,6 +38,15 @@ public class Cliente extends Persona {
 
     public void retirarPuntos(int cantidad){}
 
+    @Override
+    public String toString() {
+        return "Nombre: " + getNombre()
+                + "\nID: " + getID()
+                + "\nCorreo: " + getCorreo()
+                + "\nDireccion: " + getDireccion()
+                + "\nSaldo bancario: " + getCuentaBancaria().getSaldo()
+                + "\nSaldo puntos: " + getCuentaPuntos().getPuntos();
+    }
 
     public Vector<Reserva> getCartera() {
         return cartera;
