@@ -1,9 +1,11 @@
 package InterfasGrafica;
 
-import InterfasGrafica.Ventanas.CrearMenuRegistro;
+import InterfasGrafica.Ventanas.Ingreso;
 import InterfasGrafica.Ventanas.VentanaGenerica;
 import InterfasGrafica.Ventanas.VentanaInformacion;
-import baseDatos.Escribir;
+import gestorAplicacion.master.Cine;
+import gestorAplicacion.master.Empleado;
+import gestorAplicacion.master.Funcion;
 import gestorAplicacion.usuario.Cliente;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -15,23 +17,40 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
+import java.util.Vector;
 
 //Esta sera la pantalla que interactuara con el usuario
 public class PantallaUsuario  extends Application {
+    public static Empleado empleado = new Empleado();
+    public static Cliente cliente = new Cliente();
+    public static Funcion funcionn = new Funcion();
     public void init(){
 
     }
     public void stop(){
 
+    }
+    /*Creo este metodo para no tener que darle estilo cada que creo un label, si no directamente pasarlo por este
+    metodo y que quede definido su propio estilo*/
+    public void definirEstilo(Label label, int tamanio){
+        label.setTextFill(Color.WHITE);
+        label.setFont(new Font("Arial Black",tamanio));
+    }
+    /*Este temodo nos ayudara a que cada vez que creemos un FieldPanel podemos centrarlo en la posicion
+      que queramos (Dado que al FieldPane heredar de pane, no se puede centrar dinamicamente) con este
+      metodo si lo podremos hacer*/
+    public GridPane centarFieldPanel(FieldPanel fieldPanel){
+        GridPane auxiliar = new GridPane();
+        auxiliar.add(fieldPanel,0,0);
+        auxiliar.setAlignment(Pos.CENTER);
+        BorderPane.setMargin(auxiliar,new Insets(0,0,25,0));
+        return auxiliar;
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -39,9 +58,9 @@ public class PantallaUsuario  extends Application {
         //Creacion de los diferentes componentes que vamos a usar
         VBox panelPrincipal = new VBox();
         BorderPane panelEstructura = new BorderPane();
-        Label titulo = new Label("Hola mundo");
+        Label arriba = new Label("Nombre del proceso o consulta");
 
-        //Creamos los diferentes menus que se van a usat
+        //Creamos los diferentes menus que se van a usar
         MenuBar menu =  new MenuBar();
         Menu archivo = new Menu("Archivo");
         Menu procesos = new Menu("Procesos y consultas");
@@ -49,6 +68,7 @@ public class PantallaUsuario  extends Application {
         MenuItem usuario = new MenuItem("Usuario");
         MenuItem salir = new MenuItem("Salir");
         MenuItem acercaDe = new MenuItem("Acerca de");
+        MenuItem comprarBoleto = new MenuItem("Comprar boletos");
 
         /*Definir demas elementos del menu procesos*/
         //Definimos los conponentes de cada menu
@@ -57,32 +77,35 @@ public class PantallaUsuario  extends Application {
         menu.getMenus().add(ayuda);
         archivo.getItems().add(usuario);
         archivo.getItems().add(salir);
+        procesos.getItems().add(comprarBoleto);
         ayuda.getItems().add(acercaDe);
 
         //Metodos para definir estilos
         panelPrincipal.setStyle("-fx-background-color: BLACK");
-        titulo.setTextFill(Color.WHITE);
-        titulo.setFont(new Font("Arial Black",20));
+        definirEstilo(arriba,25);
         panelPrincipal.minHeight(700);
         panelPrincipal.minWidth(700);
 
         //
-        titulo.setAlignment(Pos.CENTER);
-        panelPrincipal.getChildren().addAll(menu,titulo);
+        arriba.setAlignment(Pos.CENTER);
+        panelPrincipal.getChildren().addAll(menu,arriba);
         panelPrincipal.setAlignment(Pos.CENTER);
 
         //Ponemos todos los elementos en el panel principal y los acomodamos en su respectiva posicion
-        Label medio = new Label("Medio");
-        Label abajo = new Label("Abajo");
+        //Tambien les damos un poco de estilo
+        Label medio = new Label("*Espacio donde se realizaran las consultas*");
+        Label abajo = new Label("En este espacio el usuario tendra la capacidad de comprar boletos, cancelar \n                                  reservas hechas y canjear sus puntos.");
+        definirEstilo(medio,20);
+        definirEstilo(abajo,15);
         panelEstructura.setTop(panelPrincipal);
         panelEstructura.setCenter(medio);
         panelEstructura.setBottom(abajo);
-        BorderPane.setMargin(titulo,new Insets(5,0,10,0));
-        BorderPane.setAlignment(titulo, Pos.CENTER);
+        panelEstructura.setStyle("-fx-background-color: BLACK");
+        BorderPane.setMargin(arriba,new Insets(500,0,0,0)); //Pero este no :(
+        BorderPane.setMargin(abajo,new Insets(0,0,25,0)); //Esto si funciona
+        BorderPane.setAlignment(arriba, Pos.CENTER);
         BorderPane.setAlignment(medio,Pos.CENTER);
         BorderPane.setAlignment(abajo,Pos.CENTER);
-
-
 
         //Metodos que me permiten ajustar las caracteristicas de primaryStage
         primaryStage.setTitle("Cliente: "+ Cliente.getClienteActual().getNombre());
@@ -122,6 +145,129 @@ public class PantallaUsuario  extends Application {
                         .append("Molano Kevin Andres\n");
                 String usuario = Cliente.getClienteActual().toString();
                 VentanaInformacion.showing("Acerda de",mensaje.toString(),"Aceptar",500,220);
+            }
+        });
+        //Este evento es para definir lo que se hara cuando de vayan a comprar los boletos *Tengo miedo*
+        comprarBoleto.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //Definimos lo que sera el nuevo titulo
+                Label titulo = new Label("Compra de boletos");
+                definirEstilo(titulo,25);
+
+                /*Removemos los dos elementos que se tiene y ponemos los que necesitamos ahora*/
+                panelPrincipal.getChildren().remove(0);
+                panelPrincipal.getChildren().remove(0);
+                panelPrincipal.getChildren().addAll(menu,titulo);
+                /*Definimos lo que sera el nuevo centro del Panel*/
+                Label ciudad = new Label(empleado.consultarCines());
+                definirEstilo(ciudad,15);
+                panelEstructura.setCenter(ciudad);
+                /*Pedimos los datos con el FieldPanel*/
+                String[] criterios = new String[] {"Seleccione la ciudad deseada"};
+                String[] valores = new String[] {""};
+                boolean[] habilitados = new boolean[] {};
+                FieldPanel probando = new FieldPanel("",criterios,"",valores,habilitados);
+                /*Con esto podemos centrar el fieldPanel*/
+                GridPane auxiliar = centarFieldPanel(probando);
+                panelEstructura.setBottom(auxiliar);
+
+                /*Con esto recibimos la ciudad en la que el usuario quiere ver las funciones*/
+                probando.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        try {
+                            probando.GuardarDatos();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        /*Aca conseguimos todas las salas de cine en la ciudad seleccionada*/
+                        Vector<Cine> salasXCiudad = empleado.cinesPorCiudad(Cine.getCiudades().get(Integer.parseInt(valores[0])-1));
+                        Label cinesPorCiudad = new Label(" Salas de cine disponibles en la ciudad:\n"+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  \n"+empleado.cinesPorCiudad(salasXCiudad));
+                        definirEstilo(cinesPorCiudad,15);
+                        panelEstructura.setCenter(cinesPorCiudad);
+                        /*Ahora debemos crear un nuevo FieldPanel y volver a repetir el proceso :'v*/
+                        String[] criteriosSala = new String[] {"Seleccione la sala deseada"};
+                        String[] valoresSala = new String[] {""};
+                        boolean[] habilitadosSala = new boolean[] {};
+                        FieldPanel sala = new FieldPanel("",criteriosSala,"",valoresSala,habilitadosSala);
+                        /*GridPanel auxiliar para poder centra*/
+                        GridPane auxiliarSala = centarFieldPanel(sala);
+                        panelEstructura.setBottom(auxiliarSala);
+                        /*Ahora seguimos con la opcion de aceptar cuando igresas la ciudad*/
+                        sala.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                try {
+                                    sala.GuardarDatos();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                Label mostrarSemana = new Label("  Ha elegio el cine " + salasXCiudad.get(Integer.parseInt(valoresSala[0])-1).getNombre() +"\n"+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+ empleado.mostrarSemana().toString());
+                                definirEstilo(mostrarSemana,15);
+                                panelEstructura.setCenter(mostrarSemana);
+                                /*Creamos el nuevo FieldPanel para poder pedir el dia de la funcion*/
+                                String[] criteriosDia = new String[] {"Elija el dia que desea reservar"};
+                                String[] valoresDia = new String[] {""};
+                                boolean[] habilitadosDia = new boolean[] {};
+                                FieldPanel diaFuncion = new FieldPanel("",criteriosDia,"",valoresDia,habilitadosDia);
+                                /*Panel auxiliar para poder centrar lo que necesitamos*/
+                                GridPane auxiliarDia = centarFieldPanel(diaFuncion);
+                                panelEstructura.setBottom(auxiliarDia);
+                                diaFuncion.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent event) {
+                                        try {
+                                            diaFuncion.GuardarDatos();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        Vector<Funcion> funcionesDia = Cliente.getClienteActual().consultarFunciones(Integer.parseInt(valoresDia[0]),salasXCiudad.get(Integer.parseInt(valoresSala[0])-1));
+                                        Label funcionesDelDia = new Label("Funciones del día y sus precios en\n"+"           [dinero($) || puntos(P)]\n"+"         ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"+Cliente.getClienteActual().consultarFunciones(funcionesDia).toString());
+                                        definirEstilo(funcionesDelDia,15);
+                                        panelEstructura.setCenter(funcionesDelDia);
+                                        /*Definimos un nuevo FieldPanel para pedir los datos*/
+                                        String[] criteriosFuncion = new String[] {"Elija la funcion que desea"};
+                                        String[] valoresFuncion = new String[] {""};
+                                        boolean[] habilitadosFuncion = new boolean[] {};
+                                        FieldPanel funcion = new FieldPanel("",criteriosFuncion,"",valoresFuncion,habilitadosFuncion);
+                                        GridPane auxiliarFuncion = centarFieldPanel(funcion);
+                                        panelEstructura.setBottom(auxiliarFuncion);
+                                        funcion.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                            @Override
+                                            public void handle(MouseEvent event) {
+                                                try {
+                                                    funcion.GuardarDatos();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                                Label asientos = new Label(funcionn.mostrarPuestos());
+                                                definirEstilo(asientos,15);
+                                                panelEstructura.setCenter(asientos);
+                                                /*Hacemos otro FieldPanel para pedir el asiento(Please stop :'v)*/
+                                                String[] criteriosPuesto = new String[] {"Elija su puesto"};
+                                                String[] valoresPuesto = new String[] {""};
+                                                boolean[] habilitadosPuesto = new boolean[] {};
+                                                FieldPanel puestoElegir = new FieldPanel("",criteriosPuesto,"",valoresPuesto,habilitadosPuesto);
+                                                /*Lo centramos y lo acomodamos*/
+                                                GridPane auxiliarPuesto = centarFieldPanel(puestoElegir);
+                                                panelEstructura.setBottom(auxiliarPuesto);
+                                                puestoElegir.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                                    @Override
+                                                    public void handle(MouseEvent event) {
+                                                        Label frase = new Label("Por favor elija su medio de pago\n"+"Saldo en dinero: ");
+                                                        definirEstilo(frase,15);
+                                                        panelEstructura.setCenter(frase);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             }
         });
     }

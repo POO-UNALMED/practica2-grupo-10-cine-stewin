@@ -192,12 +192,11 @@ public class Funcion implements Serializable {
         a = s.substring(0, (s.length() / 2) + 1);
         b = s.substring((s.length() / 2), s.length());
         return "       Asientos disponibles en la funcion: \n" +
-                "      ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
-                "             ʭLa pantalla esta acaʭ \n"
-                + a + "\n"
-                + "---------------------------------------------------\n"
-                + "---------------------------------------------------\n"
-                + b;
+                "      ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" +
+                "                  ʭLa pantalla esta acaʭ \n\n"
+                + "  "+a + "\n"
+                + "\n"
+                + "  "+b;
     }
 
     /*Metodo que se muestra el estado de la funcion respecto al dia actual es decir, False si una funcion ya paso

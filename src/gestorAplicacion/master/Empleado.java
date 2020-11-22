@@ -142,7 +142,7 @@ public class Empleado extends Persona {
     public String consultarCines() {
         StringBuilder s = new StringBuilder();
         s.append("     Ciudades en las cuales tenemos cobertura: \n");
-        s.append("    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n");
+        s.append("    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n");
         for (Cine cine : BaseDeDatos.getCines()) {
             if (!(Cine.getCiudades().contains(cine.getCiudad()))) {
                 Cine.getCiudades().add(cine.getCiudad());

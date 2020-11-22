@@ -5,6 +5,7 @@ import InterfasGrafica.Ventanas.Ingreso;
 import baseDatos.BaseDeDatos;
 import baseDatos.Escribir;
 import baseDatos.Leer;
+import gestorAplicacion.master.Empleado;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -28,12 +29,15 @@ public class PantallaInicial extends Application{
     Vector<String> datosAutores = new Vector<String>(); /*Tendremos los autores aca */
     int contadorCines = 0;
     int contadorAutores = 0;
+    Empleado empleado = new Empleado();
 
     //Metodo que se ejecuta al principio para leer la base de datos
     public void init(){
         Leer.Leer();
         BaseDeDatos.relacionar();
         System.out.println(BaseDeDatos.getClientes().size()); //--------------------------------
+        empleado.enlazarFuncionesYCines();
+        empleado.definirSemanaFunciones();
     }
     public void start(Stage primaryStage) throws Exception {
 
