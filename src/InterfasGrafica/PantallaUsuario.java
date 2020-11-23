@@ -27,38 +27,40 @@ import javafx.stage.Stage;
 import java.util.Vector;
 
 //Esta sera la pantalla que interactuara con el usuario
-public class PantallaUsuario  extends Application {
+public class PantallaUsuario extends Application {
 
     public static Empleado empleado = new Empleado();
     public static Cliente cliente = new Cliente();
-    public void init(){
+
+    public void init() {
 
     }
+
     /*En caso de que algunos usuarios intenten salir desde la 2 pantalla guardaremos los datos*/
-    public void stop(){
+    public void stop() {
         Escribir.Escribir();
     }
 
     /*Creo este metodo para no tener que darle estilo cada que creo un label, si no directamente pasarlo por este
     metodo y que quede definido su propio estilo*/
-    public void definirEstilo(Label label, int tamanio){
+    public void definirEstilo(Label label, int tamanio) {
         label.setTextFill(Color.WHITE);
-        label.setFont(new Font("Arial Black",tamanio));
+        label.setFont(new Font("Arial Black", tamanio));
     }
 
     /*Este temodo nos ayudara a que cada vez que creemos un FieldPanel podemos centrarlo en la posicion
       que queramos (Dado que al FieldPane heredar de pane, no se puede centrar dinamicamente) con este
       metodo si lo podremos hacer*/
-    public GridPane centarFieldPanel(FieldPanel fieldPanel){
+    public GridPane centarFieldPanel(FieldPanel fieldPanel) {
         GridPane auxiliar = new GridPane();
-        auxiliar.add(fieldPanel,0,0);
+        auxiliar.add(fieldPanel, 0, 0);
         auxiliar.setAlignment(Pos.CENTER);
-        BorderPane.setMargin(auxiliar,new Insets(0,0,25,0));
+        BorderPane.setMargin(auxiliar, new Insets(0, 0, 25, 0));
         return auxiliar;
     }
 
     /*Metodo que me ayuda a definir el estilo de los botones*/
-    public void definirBotones(Button boton){
+    public void definirBotones(Button boton) {
         boton.setMinHeight(40);
         boton.setMinWidth(60);
         boton.setAlignment(Pos.CENTER);
@@ -73,7 +75,7 @@ public class PantallaUsuario  extends Application {
         Label arriba = new Label("Nombre del proceso o consulta");
 
         /*Creamos los diferentes menus que se van a usar*/
-        MenuBar menu =  new MenuBar();
+        MenuBar menu = new MenuBar();
         Menu archivo = new Menu("Archivo");
         Menu procesos = new Menu("Procesos y consultas");
         Menu ayuda = new Menu("Ayuda");
@@ -86,39 +88,39 @@ public class PantallaUsuario  extends Application {
         MenuItem comprarComidas = new MenuItem("Comprar comida");
 
         /*Definimos los conponentes de cada menu*/
-        menu.getMenus().addAll(archivo,procesos,ayuda);
-        archivo.getItems().addAll(usuario,new SeparatorMenuItem(),salir);
-        procesos.getItems().addAll(comprarBoleto,new SeparatorMenuItem(),consultarReservas,new SeparatorMenuItem(),cambiarReservas,new SeparatorMenuItem(),comprarComidas);
+        menu.getMenus().addAll(archivo, procesos, ayuda);
+        archivo.getItems().addAll(usuario, new SeparatorMenuItem(), salir);
+        procesos.getItems().addAll(comprarBoleto, new SeparatorMenuItem(), consultarReservas, new SeparatorMenuItem(), cambiarReservas, new SeparatorMenuItem(), comprarComidas);
         ayuda.getItems().add(acercaDe);
 
         /*Ponemos el titulo por defecto a la escena y le pasamos el menu*/
-        definirEstilo(arriba,25);
+        definirEstilo(arriba, 25);
         arriba.setAlignment(Pos.CENTER);
-        panelPrincipal.getChildren().addAll(menu,arriba);
+        panelPrincipal.getChildren().addAll(menu, arriba);
         panelPrincipal.setAlignment(Pos.CENTER);
 
         /*Ponemos todos los elementos en el panel estructura y los acomodamos en su respectiva posicion
           tambien les damos un poco de estilo*/
         Label medio = new Label("*Espacio donde se realizaran las consultas*");
         Label abajo = new Label("En este espacio el usuario tendra la capacidad de comprar boletos, cancelar \n                                  reservas hechas y canjear sus puntos.");
-        definirEstilo(medio,20);
-        definirEstilo(abajo,15);
+        definirEstilo(medio, 20);
+        definirEstilo(abajo, 15);
         panelEstructura.setTop(panelPrincipal);
         panelEstructura.setCenter(medio);
         panelEstructura.setBottom(abajo);
         panelEstructura.setStyle("-fx-background-color: BLACK");
-        BorderPane.setMargin(arriba,new Insets(500,0,0,0)); //Pero este no :(
-        BorderPane.setMargin(abajo,new Insets(0,0,25,0)); //Esto si funciona
+        BorderPane.setMargin(arriba, new Insets(500, 0, 0, 0)); //Pero este no :(
+        BorderPane.setMargin(abajo, new Insets(0, 0, 25, 0)); //Esto si funciona
         BorderPane.setAlignment(arriba, Pos.CENTER);
-        BorderPane.setAlignment(medio,Pos.CENTER);
-        BorderPane.setAlignment(abajo,Pos.CENTER);
+        BorderPane.setAlignment(medio, Pos.CENTER);
+        BorderPane.setAlignment(abajo, Pos.CENTER);
 
         /*Metodos que me permiten ajustar las caracteristicas de primaryStage*/
-        primaryStage.setTitle("Cliente: "+ Cliente.getClienteActual().getNombre());
+        primaryStage.setTitle("Cliente: " + Cliente.getClienteActual().getNombre());
         primaryStage.initModality(Modality.APPLICATION_MODAL);
 
         /*Creamos la escena*/
-        Scene escenaPrincipal = new Scene(panelEstructura,700,700);
+        Scene escenaPrincipal = new Scene(panelEstructura, 700, 700);
 
         /*Pasamos la escena al stage*/
         primaryStage.setScene(escenaPrincipal);
@@ -141,7 +143,7 @@ public class PantallaUsuario  extends Application {
             public void handle(ActionEvent event) {
                 String usuario = Cliente.getClienteActual().toString();
                 /*Mostramos todos los datos del usario que ha entrado al siste,a*/
-                VentanaInformacion.showing("Usuario",usuario,"Aceptar",500,200);
+                VentanaInformacion.showing("Usuario", usuario, "Aceptar", 500, 200);
             }
         });
 
@@ -157,7 +159,7 @@ public class PantallaUsuario  extends Application {
                         .append("Molano Kevin Andres\n");
                 String usuario = Cliente.getClienteActual().toString();
                 /*Mostramos la informacion de los desarrolladores en una ventana emergente*/
-                VentanaInformacion.showing("Acerda de",mensaje.toString(),"Aceptar",500,220);
+                VentanaInformacion.showing("Acerda de", mensaje.toString(), "Aceptar", 500, 220);
             }
         });
 
@@ -168,23 +170,23 @@ public class PantallaUsuario  extends Application {
 
                 //Definimos lo que sera el nuevo titulo
                 Label titulo = new Label("Compra de boletos");
-                definirEstilo(titulo,25);
+                definirEstilo(titulo, 25);
 
                 /*Removemos los dos elementos que se tiene y ponemos los que necesitamos ahora*/
                 panelPrincipal.getChildren().remove(0);
                 panelPrincipal.getChildren().remove(0);
-                panelPrincipal.getChildren().addAll(menu,titulo);
+                panelPrincipal.getChildren().addAll(menu, titulo);
 
                 /*Definimos lo que sera el nuevo centro del Panel*/
                 Label ciudad = new Label(empleado.consultarCines());
-                definirEstilo(ciudad,15);
+                definirEstilo(ciudad, 15);
                 panelEstructura.setCenter(ciudad);
 
                 /*Pedimos los datos con el FieldPanel*/
-                String[] criterios = new String[] {"Seleccione la ciudad deseada"};
-                String[] valores = new String[] {""};
-                boolean[] habilitados = new boolean[] {};
-                FieldPanel probando = new FieldPanel("",criterios,"",valores,habilitados);
+                String[] criterios = new String[]{"Seleccione la ciudad deseada"};
+                String[] valores = new String[]{""};
+                boolean[] habilitados = new boolean[]{};
+                FieldPanel probando = new FieldPanel("", criterios, "", valores, habilitados);
 
                 /*Con esto podemos centrar el fieldPanel*/
                 GridPane auxiliar = centarFieldPanel(probando);
@@ -201,17 +203,17 @@ public class PantallaUsuario  extends Application {
                         }
 
                         /*Aca conseguimos todas las salas de cine en la ciudad que el usuario ha elegido y se las mostramos*/
-                        Vector<Cine> salasXCiudad = empleado.cinesPorCiudad(Cine.getCiudades().get(Integer.parseInt(valores[0])-1));
-                        Label cinesPorCiudad = new Label(" Salas de cine disponibles en la ciudad:\n"+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  \n"+empleado.cinesPorCiudad(salasXCiudad));
-                        definirEstilo(cinesPorCiudad,15);
+                        Vector<Cine> salasXCiudad = empleado.cinesPorCiudad(Cine.getCiudades().get(Integer.parseInt(valores[0]) - 1));
+                        Label cinesPorCiudad = new Label(" Salas de cine disponibles en la ciudad:\n" + "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  \n" + empleado.cinesPorCiudad(salasXCiudad));
+                        definirEstilo(cinesPorCiudad, 15);
                         panelEstructura.setCenter(cinesPorCiudad);
 
                         /*Ahora debemos crear un nuevo FieldPanel y volver a repetir el proceso
                           para pedir los datos de la sala:'v*/
-                        String[] criteriosSala = new String[] {"Seleccione la sala deseada"};
-                        String[] valoresSala = new String[] {""};
-                        boolean[] habilitadosSala = new boolean[] {};
-                        FieldPanel sala = new FieldPanel("",criteriosSala,"",valoresSala,habilitadosSala);
+                        String[] criteriosSala = new String[]{"Seleccione la sala deseada"};
+                        String[] valoresSala = new String[]{""};
+                        boolean[] habilitadosSala = new boolean[]{};
+                        FieldPanel sala = new FieldPanel("", criteriosSala, "", valoresSala, habilitadosSala);
 
                         /*GridPanel auxiliar para poder centra*/
                         GridPane auxiliarSala = centarFieldPanel(sala);
@@ -227,15 +229,15 @@ public class PantallaUsuario  extends Application {
                                     e.printStackTrace();
                                 }
                                 /*Mostramos la semana al usuario para que pueda elegir un dia*/
-                                Label mostrarSemana = new Label("  Ha elegio el cine " + salasXCiudad.get(Integer.parseInt(valoresSala[0])-1).getNombre() +"\n"+"¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯"+ empleado.mostrarSemana().toString());
-                                definirEstilo(mostrarSemana,15);
+                                Label mostrarSemana = new Label("  Ha elegio el cine " + salasXCiudad.get(Integer.parseInt(valoresSala[0]) - 1).getNombre() + "\n" + "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯" + empleado.mostrarSemana().toString());
+                                definirEstilo(mostrarSemana, 15);
                                 panelEstructura.setCenter(mostrarSemana);
 
                                 /*Creamos el nuevo FieldPanel para poder pedir el dia de la funcion*/
-                                String[] criteriosDia = new String[] {"Elija el dia que desea reservar"};
-                                String[] valoresDia = new String[] {""};
-                                boolean[] habilitadosDia = new boolean[] {};
-                                FieldPanel diaFuncion = new FieldPanel("",criteriosDia,"",valoresDia,habilitadosDia);
+                                String[] criteriosDia = new String[]{"Elija el dia que desea reservar"};
+                                String[] valoresDia = new String[]{""};
+                                boolean[] habilitadosDia = new boolean[]{};
+                                FieldPanel diaFuncion = new FieldPanel("", criteriosDia, "", valoresDia, habilitadosDia);
 
                                 /*Panel auxiliar para poder centrar lo que necesitamos*/
                                 GridPane auxiliarDia = centarFieldPanel(diaFuncion);
@@ -252,18 +254,18 @@ public class PantallaUsuario  extends Application {
                                         }
 
                                         /*En este vector estan guardadas todas las funciones del dia que se selecciono*/
-                                        Vector<Funcion> funcionesDia = Cliente.getClienteActual().consultarFunciones(Integer.parseInt(valoresDia[0]),salasXCiudad.get(Integer.parseInt(valoresSala[0])-1));
-                                        Label funcionesDelDia = new Label("Funciones del día y sus precios en\n"+"           [dinero($) || puntos(P)]\n"+"         ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"+Cliente.getClienteActual().consultarFunciones(funcionesDia).toString());
-                                        definirEstilo(funcionesDelDia,15);
+                                        Vector<Funcion> funcionesDia = Cliente.getClienteActual().consultarFunciones(Integer.parseInt(valoresDia[0]), salasXCiudad.get(Integer.parseInt(valoresSala[0]) - 1));
+                                        Label funcionesDelDia = new Label("Funciones del día y sus precios en\n" + "           [dinero($) || puntos(P)]\n" + "         ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" + Cliente.getClienteActual().consultarFunciones(funcionesDia).toString());
+                                        definirEstilo(funcionesDelDia, 15);
 
                                         /*Ponemos todas las funciones del dia elegido en el centro de la escena*/
                                         panelEstructura.setCenter(funcionesDelDia);
 
                                         /*Definimos un nuevo FieldPanel para pedir los datos de la funcion que se quiere ver*/
-                                        String[] criteriosFuncion = new String[] {"Elija la funcion que desea"};
-                                        String[] valoresFuncion = new String[] {""};
-                                        boolean[] habilitadosFuncion = new boolean[] {};
-                                        FieldPanel funcion = new FieldPanel("",criteriosFuncion,"",valoresFuncion,habilitadosFuncion);
+                                        String[] criteriosFuncion = new String[]{"Elija la funcion que desea"};
+                                        String[] valoresFuncion = new String[]{""};
+                                        boolean[] habilitadosFuncion = new boolean[]{};
+                                        FieldPanel funcion = new FieldPanel("", criteriosFuncion, "", valoresFuncion, habilitadosFuncion);
                                         GridPane auxiliarFuncion = centarFieldPanel(funcion);
 
                                         /*Centramos el FieldPanel*/
@@ -279,15 +281,15 @@ public class PantallaUsuario  extends Application {
                                                     e.printStackTrace();
                                                 }
                                                 /*Mostramos los asientos disponibles en el centro de la pantalla*/
-                                                Label asientos = new Label(funcionesDia.get(Integer.parseInt(valoresFuncion[0])-1).mostrarPuestos());
-                                                definirEstilo(asientos,15);
+                                                Label asientos = new Label(funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1).mostrarPuestos());
+                                                definirEstilo(asientos, 15);
                                                 panelEstructura.setCenter(asientos);
 
                                                 /*Hacemos otro FieldPanel para pedir el asiento(Please stop :'v)*/
-                                                String[] criteriosPuesto = new String[] {"Elija su puesto"};
-                                                String[] valoresPuesto = new String[] {""};
-                                                boolean[] habilitadosPuesto = new boolean[] {};
-                                                FieldPanel puestoElegir = new FieldPanel("",criteriosPuesto,"",valoresPuesto,habilitadosPuesto);
+                                                String[] criteriosPuesto = new String[]{"Elija su puesto"};
+                                                String[] valoresPuesto = new String[]{""};
+                                                boolean[] habilitadosPuesto = new boolean[]{};
+                                                FieldPanel puestoElegir = new FieldPanel("", criteriosPuesto, "", valoresPuesto, habilitadosPuesto);
 
                                                 /*Lo centramos y lo acomodamos*/
                                                 GridPane auxiliarPuesto = centarFieldPanel(puestoElegir);
@@ -303,9 +305,9 @@ public class PantallaUsuario  extends Application {
                                                             e.printStackTrace();
                                                         }
                                                         /*Le mostramos al usuario su saldo*/
-                                                        Label frase = new Label("Por favor elija su medio de pago\n"+"Saldo en dinero: " + Cliente.getClienteActual().getCuentaBancaria().getSaldo()+"\n"+
+                                                        Label frase = new Label("Por favor elija su medio de pago\n" + "Saldo en dinero: " + Cliente.getClienteActual().getCuentaBancaria().getSaldo() + "\n" +
                                                                 "Saldo en puntos: " + Cliente.getClienteActual().getCuentaPuntos().getPuntos());
-                                                        definirEstilo(frase,15);
+                                                        definirEstilo(frase, 15);
                                                         panelEstructura.setCenter(frase);
 
                                                         /*Mostramos al usuario los botones que corresponden a los medios de pago disponibles
@@ -313,31 +315,31 @@ public class PantallaUsuario  extends Application {
                                                         Button pagarDinero = new Button("Pagar con dinero");
                                                         Button pagarPuntos = new Button("Pagar con puntos");
                                                         GridPane menuPago = new GridPane();
-                                                        menuPago.add(pagarDinero,0,0);
-                                                        menuPago.add(pagarPuntos,1,0);
+                                                        menuPago.add(pagarDinero, 0, 0);
+                                                        menuPago.add(pagarPuntos, 1, 0);
                                                         menuPago.setVgap(8);
                                                         menuPago.setHgap(8);
                                                         menuPago.setAlignment(Pos.CENTER);
                                                         definirBotones(pagarDinero);
                                                         definirBotones(pagarPuntos);
                                                         panelEstructura.setBottom(menuPago);
-                                                        BorderPane.setMargin(menuPago,new Insets(0,0,25,0));
+                                                        BorderPane.setMargin(menuPago, new Insets(0, 0, 25, 0));
 
                                                         /*Este evento se desarrola cuando el usaurio ha elegido pagar con dinero*/
                                                         pagarDinero.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                                             @Override
                                                             public void handle(MouseEvent event) {
-                                                                if(Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= 20000){
+                                                                if (Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= 20000) {
 
                                                                     /*En este vector almacenamos el numero del puesto que se ha elegido*/
                                                                     Vector<Integer> puestoElegido = new Vector<Integer>();
                                                                     puestoElegido.add(Integer.parseInt(valoresPuesto[0]));
 
                                                                     /*Reservamos el puesto*/
-                                                                    Cliente.getClienteActual().reservarPuestos(puestoElegido,funcionesDia.get(Integer.parseInt(valoresFuncion[0])-1));
+                                                                    Cliente.getClienteActual().reservarPuestos(puestoElegido, funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1));
 
                                                                     /*Sacamos el dinero de la cuenta de la persona*/
-                                                                    empleado.transaccionDinero(Cliente.getClienteActual(),20000);
+                                                                    empleado.transaccionDinero(Cliente.getClienteActual(), 20000);
 
                                                                     /*Con esto cerramos el stage actual, lo volvemos a ejecutar desde el princio y mostramos una ventana
                                                                      de confirmacion*/
@@ -347,17 +349,17 @@ public class PantallaUsuario  extends Application {
                                                                     } catch (Exception e) {
                                                                         e.printStackTrace();
                                                                     }
-                                                                    VentanaInformacion.showing("Confirmar compra","Reserva hecha satisfacctoriamente","Aceptar",400,100);
+                                                                    VentanaInformacion.showing("Confirmar compra", "Reserva hecha satisfacctoriamente", "Aceptar", 400, 100);
 
                                                                     /*En caso de que no cuente con el saldo suficiente, lo devolvemos al princio y mostramos una ventana de error*/
-                                                                }else{
+                                                                } else {
                                                                     primaryStage.close();
                                                                     try {
                                                                         start(new Stage());
                                                                     } catch (Exception e) {
                                                                         e.printStackTrace();
                                                                     }
-                                                                    VentanaInformacion.showing("Compra rechazada","No tienes el saldo suficiente","Aceptar",400,100);
+                                                                    VentanaInformacion.showing("Compra rechazada", "No tienes el saldo suficiente", "Aceptar", 400, 100);
                                                                 }
                                                             }
                                                         });
@@ -368,26 +370,26 @@ public class PantallaUsuario  extends Application {
                                                         pagarPuntos.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                                             @Override
                                                             public void handle(MouseEvent event) {
-                                                                if(Cliente.getClienteActual().getCuentaPuntos().getPuntos() >= 3000){
+                                                                if (Cliente.getClienteActual().getCuentaPuntos().getPuntos() >= 3000) {
                                                                     Vector<Integer> puestoElegido = new Vector<Integer>();
                                                                     puestoElegido.add(Integer.parseInt(valoresPuesto[0]));
-                                                                    Cliente.getClienteActual().reservarPuestos(puestoElegido,funcionesDia.get(Integer.parseInt(valoresFuncion[0])-1),true);
-                                                                    empleado.transaccionPuntos(Cliente.getClienteActual(),3000);
+                                                                    Cliente.getClienteActual().reservarPuestos(puestoElegido, funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1), true);
+                                                                    empleado.transaccionPuntos(Cliente.getClienteActual(), 3000);
                                                                     primaryStage.close();
                                                                     try {
                                                                         start(new Stage());
                                                                     } catch (Exception e) {
                                                                         e.printStackTrace();
                                                                     }
-                                                                    VentanaInformacion.showing("Confirmar compra","Reserva hecha satisfacctoriamente","Aceptar",400,100);
-                                                                }else{
+                                                                    VentanaInformacion.showing("Confirmar compra", "Reserva hecha satisfacctoriamente", "Aceptar", 400, 100);
+                                                                } else {
                                                                     primaryStage.close();
                                                                     try {
                                                                         start(new Stage());
                                                                     } catch (Exception e) {
                                                                         e.printStackTrace();
                                                                     }
-                                                                    VentanaInformacion.showing("Compra rechazada","No tienes el saldo suficiente","Aceptar",400,100);
+                                                                    VentanaInformacion.showing("Compra rechazada", "No tienes el saldo suficiente", "Aceptar", 400, 100);
                                                                 }
                                                             }
                                                         });
@@ -411,22 +413,26 @@ public class PantallaUsuario  extends Application {
         consultarReservas.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                /*Cambiamos el */
+                /*Cambiamos el el titulo*/
                 Label tituloReserva = new Label("Consultar reservas");
                 panelPrincipal.getChildren().remove(0);
                 panelPrincipal.getChildren().remove(0);
-                definirEstilo(tituloReserva,25);
-                panelPrincipal.getChildren().addAll(menu,tituloReserva);
+                definirEstilo(tituloReserva, 25);
+                panelPrincipal.getChildren().addAll(menu, tituloReserva);
 
+                /*Mostramos las reservas activas y vencidad que tenga el usuario*/
                 Label reservasConsulta = new Label(Cliente.getClienteActual().consultarReservas());
-                definirEstilo(reservasConsulta,15);
+                definirEstilo(reservasConsulta, 15);
                 panelEstructura.setCenter(reservasConsulta);
-                Button volverReserva = new Button("Volver");
 
+                /*Cremos un boton para poder volver y lo ponemos en su respectiva posicion*/
+                Button volverReserva = new Button("Volver");
                 definirBotones(volverReserva);
                 panelEstructura.setBottom(volverReserva);
-                BorderPane.setAlignment(volverReserva,Pos.CENTER);
-                BorderPane.setMargin(volverReserva,new Insets(0,0,25,0));
+                BorderPane.setAlignment(volverReserva, Pos.CENTER);
+                BorderPane.setMargin(volverReserva, new Insets(0, 0, 25, 0));
+
+                /*Evento que se desarrola cuando el usuario quiere volver al menu principal*/
                 volverReserva.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -442,28 +448,41 @@ public class PantallaUsuario  extends Application {
             }
         });
 
+        /*Evento que se desarrolla cuando el usuario quiere cambiar su reserva*/
         cambiarReservas.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                /*Cambiamos el titulo*/
                 Label tituloCambioPuesto = new Label("Cambio de puesto");
-                definirEstilo(tituloCambioPuesto,25);
+                definirEstilo(tituloCambioPuesto, 25);
                 panelPrincipal.getChildren().remove(0);
                 panelPrincipal.getChildren().remove(0);
-                panelPrincipal.getChildren().addAll(menu,tituloCambioPuesto);
-                if(empleado.numeroFuncionesDisponibles(Cliente.getClienteActual())<=0){
+                panelPrincipal.getChildren().addAll(menu, tituloCambioPuesto);
+
+                /*En caso de que el usuario no tenga reservas activas mostramos este mensaje y el usuario no podra
+                  hacer nada en este menu*/
+                if (empleado.numeroFuncionesDisponibles(Cliente.getClienteActual()) <= 0) {
                     Label noFunciones = new Label("No reservas activas!!");
-                    definirEstilo(noFunciones,15);
+                    definirEstilo(noFunciones, 15);
                     panelEstructura.setCenter(noFunciones);
-                }else{
+
+                    /*En Caso de que si se tengan reservas activas seguimos con esta opcion*/
+                } else {
+                    /*Le mostramos al usuario sus reservas activas*/
                     Label funcionesDisponibles = new Label(empleado.funcionesDisponibles(Cliente.getClienteActual()).toString());
-                    definirEstilo(funcionesDisponibles,15);
+                    definirEstilo(funcionesDisponibles, 15);
                     panelEstructura.setCenter(funcionesDisponibles);
-                    String[] criteriosCambio = new String[] {"Elija el numero de la reserva a cambiar"};
-                    String[] valoresCambio = new String[] {""};
-                    boolean[] habilitadosCambio = new boolean[] {};
-                    FieldPanel puestoCambio = new FieldPanel("",criteriosCambio,"",valoresCambio,habilitadosCambio);
+
+                    /*Ahora con un FieldPanel pediremos el dato(Numero) de la reserva que desea cambiar*/
+                    String[] criteriosCambio = new String[]{"Elija el numero de la reserva a cambiar"};
+                    String[] valoresCambio = new String[]{""};
+                    boolean[] habilitadosCambio = new boolean[]{};
+                    FieldPanel puestoCambio = new FieldPanel("", criteriosCambio, "", valoresCambio, habilitadosCambio);
+                    /*Centramos el FieldPanel*/
                     GridPane auxiliarCambio = centarFieldPanel(puestoCambio);
                     panelEstructura.setBottom(auxiliarCambio);
+
+                    /*Con este evento podremos pedir ese numero de funcion a cambiar*/
                     puestoCambio.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent event) {
@@ -473,20 +492,26 @@ public class PantallaUsuario  extends Application {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            /*Con esto vaciamos los puestos*/
-                            empleado.vaciarReserva(Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getFuncion(),Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getAsientosElegidos());
+
+                            /*Con esto vaciamos los puestos para mostrarlos de nuevo*/
+                            empleado.vaciarReserva(Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getFuncion(), Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getAsientosElegidos());
+
                             /*Mostramos los nuevos asientos para que se pueda elegir*/
                             Label nuevosAsiento = new Label(Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getFuncion().mostrarPuestos());
-                            definirEstilo(nuevosAsiento,15);
+                            definirEstilo(nuevosAsiento, 15);
                             panelEstructura.setCenter(nuevosAsiento);
+
                             /*Con un FieldPanel vamos a pedir el nuevos asientos*/
-                            String[] criteriosCambio1 = new String[] {"Elija el nuevo asiento"};
-                            String[] valoresCambio1 = new String[] {""};
-                            boolean[] habilitadosCambio1 = new boolean[] {};
+                            String[] criteriosCambio1 = new String[]{"Elija el nuevo asiento"};
+                            String[] valoresCambio1 = new String[]{""};
+                            boolean[] habilitadosCambio1 = new boolean[]{};
                             Vector<Integer> puestosNuevos = new Vector<Integer>();
-                            FieldPanel puestoCambio1 = new FieldPanel("",criteriosCambio1,"",valoresCambio1,habilitadosCambio1);
+                            FieldPanel puestoCambio1 = new FieldPanel("", criteriosCambio1, "", valoresCambio1, habilitadosCambio1);
+                            /*Centramos*/
                             GridPane auxiliarCambio1 = centarFieldPanel(puestoCambio1);
                             panelEstructura.setBottom(auxiliarCambio1);
+
+                            /*Con este evento pediremos la informacion del asiento a cambiar*/
                             puestoCambio1.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                 @Override
                                 public void handle(MouseEvent event) {
@@ -495,16 +520,22 @@ public class PantallaUsuario  extends Application {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
+                                    /*Obtenemos el numero del puesto que vamos a cambiar*/
                                     puestosNuevos.add(Integer.parseInt(valoresCambio1[0]));
-                                    empleado.cambiarPuestos(Cliente.getClienteActual().cartera.get(Integer.parseInt(valoresCambio[0])).getFuncion(),puestosNuevos);
-                                    empleado.cambiarNuevosAsientos(Cliente.getClienteActual(),Integer.parseInt(valoresCambio[0]),puestosNuevos);
+
+                                    /*Metodo que me permite cambiar los puestos en la resetva*/
+                                    empleado.cambiarPuestos(Cliente.getClienteActual().cartera.get(Integer.parseInt(valoresCambio[0])).getFuncion(), puestosNuevos);
+                                    /*Metodo que me pone los asientos de la funcion como ocupados*/
+                                    empleado.cambiarNuevosAsientos(Cliente.getClienteActual(), Integer.parseInt(valoresCambio[0]), puestosNuevos);
+
+                                    /*Cerramos el stage actual para abrir uno desde 0 y mostramos una ventana de confirmacion de cambio*/
                                     primaryStage.close();
                                     try {
                                         start(new Stage());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    VentanaInformacion.showing("Confirmar cambio de reserva","Ha cambio su reserva correctamente!!","Aceptar",400,100);
+                                    VentanaInformacion.showing("Confirmar cambio de reserva", "Ha cambio su reserva correctamente!!", "Aceptar", 400, 100);
                                 }
                             });
                         }
@@ -514,34 +545,43 @@ public class PantallaUsuario  extends Application {
             }
         });
 
+        /*Evento que se desarrolla cuando el usuario quiere comprar comida*/
         comprarComidas.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
+                /*Cambiamos el titulo de la escena*/
                 Label tituloComida = new Label("Comprar comida");
                 definirEstilo(tituloComida, 25);
                 panelPrincipal.getChildren().remove(0);
                 panelPrincipal.getChildren().remove(0);
-                panelPrincipal.getChildren().addAll(menu,tituloComida);
-                Label panelCentralComida = new Label(" Opciones de comida disponibles y sus precios en\n"+"                      [dinero($) || puntos(P)]\n\n" + empleado.mostrarComidad());
-                definirEstilo(panelCentralComida,15);
+                panelPrincipal.getChildren().addAll(menu, tituloComida);
+                Label panelCentralComida = new Label(" Opciones de comida disponibles y sus precios en\n" + "                      [dinero($) || puntos(P)]\n\n" + empleado.mostrarComidad());
+                definirEstilo(panelCentralComida, 15);
                 panelEstructura.setCenter(panelCentralComida);
+
+                /*Agregamos dos botones a la escena para que el usuario pueda elegir si pagar con dinero o con puntos*/
                 Button pagoEnPuntos = new Button("Pagar con puntos");
                 Button pagoEnDinero = new Button("Pagar con dinero");
                 GridPane metodoPago = new GridPane();
-                metodoPago.add(pagoEnDinero,0,0);
-                metodoPago.add(pagoEnPuntos,1,0);
+                metodoPago.add(pagoEnDinero, 0, 0);
+                metodoPago.add(pagoEnPuntos, 1, 0);
                 metodoPago.setVgap(8);
                 metodoPago.setHgap(8);
                 metodoPago.setAlignment(Pos.CENTER);
-                BorderPane.setMargin(metodoPago,new Insets(0,0,65,0));
-                //BorderPane.setAlignment(metodoPago,Pos.CENTER);
+                BorderPane.setMargin(metodoPago, new Insets(0, 0, 65, 0));
                 panelEstructura.setBottom(metodoPago);
-                String[] criteriosComida = new String[] {"Elija la opcion de comida","Elija la cantidad deseada"};
-                String[] valoresComida = new String[] {"",""};
-                boolean[] habilitadosComida = new boolean[] {};
-                FieldPanel puestoComida = new FieldPanel("",criteriosComida,"",valoresComida,habilitadosComida);
+
+                /*Ahora con un FieldPanel vamos a pedir los datos de la opcion de comida y la cantidad
+                  que se sea elegir*/
+                String[] criteriosComida = new String[]{"Elija la opcion de comida", "Elija la cantidad deseada"};
+                String[] valoresComida = new String[]{"", ""};
+                boolean[] habilitadosComida = new boolean[]{};
+                FieldPanel puestoComida = new FieldPanel("", criteriosComida, "", valoresComida, habilitadosComida);
+                /*Centramos la informacion*/
                 GridPane auxiliarComida = centarFieldPanel(puestoComida);
+
+                /*Evento que se inicia cuando el usuario desea pagar con puntos*/
                 pagoEnPuntos.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -554,28 +594,38 @@ public class PantallaUsuario  extends Application {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                if(Cliente.getClienteActual().getCuentaPuntos().getPuntos()>= empleado.getPrecioPuntos().get(Integer.parseInt(valoresComida[0])-1)*Integer.parseInt(valoresComida[1])){
-                                    empleado.comprarComidas(Cliente.getClienteActual(),0,Integer.parseInt(valoresComida[1]),Integer.parseInt(valoresComida[0]));
+
+                                /*Verificamos que el usuario tenga los puntos suficientes para poder comprar la cantidad que ha elegido*/
+                                if (Cliente.getClienteActual().getCuentaPuntos().getPuntos() >= empleado.getPrecioPuntos().get(Integer.parseInt(valoresComida[0]) - 1) * Integer.parseInt(valoresComida[1])) {
+                                    /*Si el usuario si cuenta con los puntos suficientes ejecutamos un metodo que nos permite descontarle los puntos necesarios*/
+                                    empleado.comprarComidas(Cliente.getClienteActual(), 0, Integer.parseInt(valoresComida[1]), Integer.parseInt(valoresComida[0]));
+
+                                    /*Cerramos el stage actual, abrimos uno nuevo y mostramos una ventana de confirmacion de compra*/
                                     primaryStage.close();
                                     try {
                                         start(new Stage());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    VentanaInformacion.showing("Confirmar compra comida","Ha comprado su comida correctamente!!","Aceptar",400,100);
-                                }else{
+                                    VentanaInformacion.showing("Confirmar compra comida", "Ha comprado su comida correctamente!!", "Aceptar", 400, 100);
+
+                                /*En caso de que el usuario no tenga los puntos suficientes, cerramos el stage, abrimos uno nuevo y
+                                  mostramos una ventana de compra fallida*/
+                                } else {
                                     primaryStage.close();
                                     try {
                                         start(new Stage());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    VentanaInformacion.showing("Compra fallida","No cuenta con los suficientes puntos!!","Aceptar",400,100);
+                                    VentanaInformacion.showing("Compra fallida", "No cuenta con los suficientes puntos!!", "Aceptar", 400, 100);
                                 }
                             }
                         });
                     }
                 });
+
+                /*Evento que se ejecuta cuando se intenta pagar con dinero, igual al ya explicado de pagar con puntos*/
                 pagoEnDinero.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -588,30 +638,28 @@ public class PantallaUsuario  extends Application {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                if(Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= empleado.getPrecioDinero().get(Integer.parseInt(valoresComida[0])-1)*Integer.parseInt(valoresComida[1])){
-                                    empleado.comprarComidas(Cliente.getClienteActual(),1,Integer.parseInt(valoresComida[1]),Integer.parseInt(valoresComida[0]));
+                                if (Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= empleado.getPrecioDinero().get(Integer.parseInt(valoresComida[0]) - 1) * Integer.parseInt(valoresComida[1])) {
+                                    empleado.comprarComidas(Cliente.getClienteActual(), 1, Integer.parseInt(valoresComida[1]), Integer.parseInt(valoresComida[0]));
                                     primaryStage.close();
                                     try {
                                         start(new Stage());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    VentanaInformacion.showing("Confirmar compra comida","Ha comprado su comida correctamente!!","Aceptar",400,100);
-                                }else{
+                                    VentanaInformacion.showing("Confirmar compra comida", "Ha comprado su comida correctamente!!", "Aceptar", 400, 100);
+                                } else {
                                     primaryStage.close();
                                     try {
                                         start(new Stage());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    VentanaInformacion.showing("Compra fallida","No cuenta el dinero suficiente!!","Aceptar",400,100);
+                                    VentanaInformacion.showing("Compra fallida", "No cuenta el dinero suficiente!!", "Aceptar", 400, 100);
                                 }
                             }
                         });
                     }
                 });
-
-
             }
         });
     }
