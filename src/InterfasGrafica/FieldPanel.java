@@ -17,7 +17,7 @@ public class FieldPanel extends Pane {
     String tituloCriterios;
     String[] criterios;
     String tituloValores;
-    String[]  valores;
+    String[] valores;
     boolean[] habilitado;
 
     /*Este atributo nos servira para definir que hara cada uno se los
@@ -42,42 +42,42 @@ public class FieldPanel extends Pane {
         grid.setHgap(8);
         grid.setAlignment(Pos.CENTER);
 
-        for(int i = 0; i < criterios.length;i++) {
+        for (int i = 0; i < criterios.length; i++) {
             Label label = new Label(criterios[i]);
             label.setTextFill(Color.WHITE);
-            label.setFont(new Font("Arial Black",15));
+            label.setFont(new Font("Arial Black", 15));
             grid.add(label, 0, i);
             TextField s = new TextField("");
             s.setAlignment(Pos.CENTER);
             try {
                 s.setText(valores[i]);
                 grid.add(s, 1, i);
-            }catch(Exception e) {
+            } catch (Exception e) {
                 grid.add(s, 1, i);
             }
-            try{
-                if(!habilitado[i]) {
+            try {
+                if (!habilitado[i]) {
                     s.setEditable(false);
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
 
             }
         }
 
         Button borrar = new Button("Borrar");
-        grid.add(aceptar, 0, criterios.length,2,1);
-        grid.add(borrar, 1, criterios.length,2,1);
+        grid.add(aceptar, 0, criterios.length, 2, 1);
+        grid.add(borrar, 1, criterios.length, 2, 1);
 
-
+        /*Evento que nos permite borran lo escrito en los textField*/
         borrar.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
-                for(int i = 0; i < criterios.length;i++) {
-                    TextField a = (TextField) grid.getChildren().get((2*i)+1);
-                    try{
-                        if(habilitado[i]) {
+                for (int i = 0; i < criterios.length; i++) {
+                    TextField a = (TextField) grid.getChildren().get((2 * i) + 1);
+                    try {
+                        if (habilitado[i]) {
                             a.setText("");
                         }
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         a.setText("");
                     }
                 }
@@ -85,32 +85,18 @@ public class FieldPanel extends Pane {
         });
 
     }
-    /*
-     * Metodo para conseguir cada uno de los valores ingresados,
-     * segun el criterio recibido en el parametro
-     */
-    public String getValue(String criterio) {
-        String valor="";
-        for(int i = 0; i< this.criterios.length;i++) {
-            if(this.criterios[i].equals(criterio)) {
-                valor = this.valores[i];
-            }
-        }
-        return valor;
-    }
-    /*
-     * Guarda los datos ingresados por el usuario y borra el
-     * contenido de los textfield
-     */
-    public void GuardarDatos() throws Exception{
+
+    /*Guarda los datos ingresados por el usuario y borra el
+      contenido de los textfield*/
+    public void GuardarDatos() throws Exception {
         GridPane grid = ((GridPane) this.getChildren().get(0));
-        for(int i = 0; i < criterios.length;i++) {
+        for (int i = 0; i < criterios.length; i++) {
             TextField a;
-            a = (TextField) grid.getChildren().get((2*i)+1);
-            if(!(a.getText()).equals("")) {
+            a = (TextField) grid.getChildren().get((2 * i) + 1);
+            if (!(a.getText()).equals("")) {
                 this.valores[i] = a.getText();
                 a.setText("");
-            }else {
+            } else {
                 throw new Exception(this.criterios[i]);
             }
         }
