@@ -1,8 +1,9 @@
 package InterfasGrafica;
 
-import InterfasGrafica.Ventanas.Ingreso;
 import InterfasGrafica.Ventanas.VentanaGenerica;
 import InterfasGrafica.Ventanas.VentanaInformacion;
+import baseDatos.BaseDeDatos;
+import baseDatos.Escribir;
 import gestorAplicacion.master.Cine;
 import gestorAplicacion.master.Empleado;
 import gestorAplicacion.master.Funcion;
@@ -27,20 +28,24 @@ import java.util.Vector;
 
 //Esta sera la pantalla que interactuara con el usuario
 public class PantallaUsuario  extends Application {
+
     public static Empleado empleado = new Empleado();
     public static Cliente cliente = new Cliente();
     public void init(){
 
     }
+    /*En caso de que algunos usuarios intenten salir desde la 2 pantalla guardaremos los datos*/
     public void stop(){
-
+        Escribir.Escribir();
     }
+
     /*Creo este metodo para no tener que darle estilo cada que creo un label, si no directamente pasarlo por este
     metodo y que quede definido su propio estilo*/
     public void definirEstilo(Label label, int tamanio){
         label.setTextFill(Color.WHITE);
         label.setFont(new Font("Arial Black",tamanio));
     }
+
     /*Este temodo nos ayudara a que cada vez que creemos un FieldPanel podemos centrarlo en la posicion
       que queramos (Dado que al FieldPane heredar de pane, no se puede centrar dinamicamente) con este
       metodo si lo podremos hacer*/
@@ -51,21 +56,23 @@ public class PantallaUsuario  extends Application {
         BorderPane.setMargin(auxiliar,new Insets(0,0,25,0));
         return auxiliar;
     }
+
     /*Metodo que me ayuda a definir el estilo de los botones*/
     public void definirBotones(Button boton){
         boton.setMinHeight(40);
         boton.setMinWidth(60);
         boton.setAlignment(Pos.CENTER);
     }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        //Creacion de los diferentes componentes que vamos a usar
+        /*Creacion de los diferentes componentes que vamos a usar*/
         VBox panelPrincipal = new VBox();
         BorderPane panelEstructura = new BorderPane();
         Label arriba = new Label("Nombre del proceso o consulta");
 
-        //Creamos los diferentes menus que se van a usar
+        /*Creamos los diferentes menus que se van a usar*/
         MenuBar menu =  new MenuBar();
         Menu archivo = new Menu("Archivo");
         Menu procesos = new Menu("Procesos y consultas");
@@ -78,26 +85,20 @@ public class PantallaUsuario  extends Application {
         MenuItem cambiarReservas = new MenuItem("Cambiar reserva");
         MenuItem comprarComidas = new MenuItem("Comprar comida");
 
-        /*Definir demas elementos del menu procesos*/
-        //Definimos los conponentes de cada menu
+        /*Definimos los conponentes de cada menu*/
         menu.getMenus().addAll(archivo,procesos,ayuda);
         archivo.getItems().addAll(usuario,new SeparatorMenuItem(),salir);
         procesos.getItems().addAll(comprarBoleto,new SeparatorMenuItem(),consultarReservas,new SeparatorMenuItem(),cambiarReservas,new SeparatorMenuItem(),comprarComidas);
         ayuda.getItems().add(acercaDe);
 
-        //Metodos para definir estilos
-        panelPrincipal.setStyle("-fx-background-color: BLACK");
+        /*Ponemos el titulo por defecto a la escena y le pasamos el menu*/
         definirEstilo(arriba,25);
-        panelPrincipal.minHeight(700);
-        panelPrincipal.minWidth(700);
-
-        //
         arriba.setAlignment(Pos.CENTER);
         panelPrincipal.getChildren().addAll(menu,arriba);
         panelPrincipal.setAlignment(Pos.CENTER);
 
-        //Ponemos todos los elementos en el panel principal y los acomodamos en su respectiva posicion
-        //Tambien les damos un poco de estilo
+        /*Ponemos todos los elementos en el panel estructura y los acomodamos en su respectiva posicion
+          tambien les damos un poco de estilo*/
         Label medio = new Label("*Espacio donde se realizaran las consultas*");
         Label abajo = new Label("En este espacio el usuario tendra la capacidad de comprar boletos, cancelar \n                                  reservas hechas y canjear sus puntos.");
         definirEstilo(medio,20);
@@ -112,19 +113,20 @@ public class PantallaUsuario  extends Application {
         BorderPane.setAlignment(medio,Pos.CENTER);
         BorderPane.setAlignment(abajo,Pos.CENTER);
 
-        //Metodos que me permiten ajustar las caracteristicas de primaryStage
+        /*Metodos que me permiten ajustar las caracteristicas de primaryStage*/
         primaryStage.setTitle("Cliente: "+ Cliente.getClienteActual().getNombre());
         primaryStage.initModality(Modality.APPLICATION_MODAL);
 
-        //Creamos la escena
-        //panel.getChildren().add(panelPrincipal);
+        /*Creamos la escena*/
         Scene escenaPrincipal = new Scene(panelEstructura,700,700);
 
-        //Pasamos la escena al stage
+        /*Pasamos la escena al stage*/
         primaryStage.setScene(escenaPrincipal);
         primaryStage.show();
 
         /*Espacio para definir cada uno de los eventos que se produzcan*/
+
+        /*Aca defimos que pasa cuando el usuario interactua con el menuItem Salir*/
         salir.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -132,13 +134,18 @@ public class PantallaUsuario  extends Application {
                 VentanaGenerica.pantallaInicio.show();
             }
         });
+
+        /*Aca definimos que pasa cuando el usuario interactua con el menuItem Usuario*/
         usuario.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 String usuario = Cliente.getClienteActual().toString();
+                /*Mostramos todos los datos del usario que ha entrado al siste,a*/
                 VentanaInformacion.showing("Usuario",usuario,"Aceptar",500,200);
             }
         });
+
+        /*Aca definimos que pasa cuando el usuario interactua con el menuItem Acerda de*/
         acercaDe.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -149,6 +156,7 @@ public class PantallaUsuario  extends Application {
                         .append("Moreno Gelier Esteban\n")
                         .append("Molano Kevin Andres\n");
                 String usuario = Cliente.getClienteActual().toString();
+                /*Mostramos la informacion de los desarrolladores en una ventana emergente*/
                 VentanaInformacion.showing("Acerda de",mensaje.toString(),"Aceptar",500,220);
             }
         });
