@@ -76,17 +76,13 @@ public class PantallaUsuario  extends Application {
         MenuItem comprarBoleto = new MenuItem("Comprar boletos");
         MenuItem consultarReservas = new MenuItem("Consultar reservas");
         MenuItem cambiarReservas = new MenuItem("Cambiar reserva");
+        MenuItem comprarComidas = new MenuItem("Comprar comida");
 
         /*Definir demas elementos del menu procesos*/
         //Definimos los conponentes de cada menu
-        menu.getMenus().add(archivo);
-        menu.getMenus().add(procesos);
-        menu.getMenus().add(ayuda);
-        archivo.getItems().add(usuario);
-        archivo.getItems().add(salir);
-        procesos.getItems().add(comprarBoleto);
-        procesos.getItems().add(consultarReservas);
-        procesos.getItems().add(cambiarReservas);
+        menu.getMenus().addAll(archivo,procesos,ayuda);
+        archivo.getItems().addAll(usuario,new SeparatorMenuItem(),salir);
+        procesos.getItems().addAll(comprarBoleto,new SeparatorMenuItem(),consultarReservas,new SeparatorMenuItem(),cambiarReservas,new SeparatorMenuItem(),comprarComidas);
         ayuda.getItems().add(acercaDe);
 
         //Metodos para definir estilos
@@ -457,6 +453,107 @@ public class PantallaUsuario  extends Application {
                         }
                     });
                 }
+
+            }
+        });
+
+        comprarComidas.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                Label tituloComida = new Label("Comprar comida");
+                definirEstilo(tituloComida, 25);
+                panelPrincipal.getChildren().remove(0);
+                panelPrincipal.getChildren().remove(0);
+                panelPrincipal.getChildren().addAll(menu,tituloComida);
+                Label panelCentralComida = new Label(" Opciones de comida disponibles y sus precios en\n"+"                      [dinero($) || puntos(P)]\n\n" + empleado.mostrarComidad());
+                definirEstilo(panelCentralComida,15);
+                panelEstructura.setCenter(panelCentralComida);
+                Button pagoEnPuntos = new Button("Pagar con puntos");
+                Button pagoEnDinero = new Button("Pagar con dinero");
+                GridPane metodoPago = new GridPane();
+                metodoPago.add(pagoEnDinero,0,0);
+                metodoPago.add(pagoEnPuntos,1,0);
+                metodoPago.setVgap(8);
+                metodoPago.setHgap(8);
+                metodoPago.setAlignment(Pos.CENTER);
+                BorderPane.setMargin(metodoPago,new Insets(0,0,65,0));
+                //BorderPane.setAlignment(metodoPago,Pos.CENTER);
+                panelEstructura.setBottom(metodoPago);
+                String[] criteriosComida = new String[] {"Elija la opcion de comida","Elija la cantidad deseada"};
+                String[] valoresComida = new String[] {"",""};
+                boolean[] habilitadosComida = new boolean[] {};
+                FieldPanel puestoComida = new FieldPanel("",criteriosComida,"",valoresComida,habilitadosComida);
+                GridPane auxiliarComida = centarFieldPanel(puestoComida);
+                pagoEnPuntos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        panelEstructura.setBottom(auxiliarComida);
+                        puestoComida.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                try {
+                                    puestoComida.GuardarDatos();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                if(Cliente.getClienteActual().getCuentaPuntos().getPuntos()>= empleado.getPrecioPuntos().get(Integer.parseInt(valoresComida[0])-1)*Integer.parseInt(valoresComida[1])){
+                                    empleado.comprarComidas(Cliente.getClienteActual(),0,Integer.parseInt(valoresComida[1]),Integer.parseInt(valoresComida[0]));
+                                    primaryStage.close();
+                                    try {
+                                        start(new Stage());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    VentanaInformacion.showing("Confirmar compra comida","Ha comprado su comida correctamente!!","Aceptar",400,100);
+                                }else{
+                                    primaryStage.close();
+                                    try {
+                                        start(new Stage());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    VentanaInformacion.showing("Compra fallida","No cuenta con los suficientes puntos!!","Aceptar",400,100);
+                                }
+                            }
+                        });
+                    }
+                });
+                pagoEnDinero.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        panelEstructura.setBottom(auxiliarComida);
+                        puestoComida.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                try {
+                                    puestoComida.GuardarDatos();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                if(Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= empleado.getPrecioDinero().get(Integer.parseInt(valoresComida[0])-1)*Integer.parseInt(valoresComida[1])){
+                                    empleado.comprarComidas(Cliente.getClienteActual(),1,Integer.parseInt(valoresComida[1]),Integer.parseInt(valoresComida[0]));
+                                    primaryStage.close();
+                                    try {
+                                        start(new Stage());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    VentanaInformacion.showing("Confirmar compra comida","Ha comprado su comida correctamente!!","Aceptar",400,100);
+                                }else{
+                                    primaryStage.close();
+                                    try {
+                                        start(new Stage());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    VentanaInformacion.showing("Compra fallida","No cuenta el dinero suficiente!!","Aceptar",400,100);
+                                }
+                            }
+                        });
+                    }
+                });
+
 
             }
         });

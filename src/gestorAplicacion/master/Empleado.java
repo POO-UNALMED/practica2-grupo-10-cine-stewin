@@ -273,7 +273,6 @@ public class Empleado extends Persona {
                     .append(" || $").append(precioDinero.get(i))
                     .append(" || ").append(precioPuntos.get(i)).append("P ||").append("\n");
         }
-        s.append(comidas.size()+1).append(". Atrás");
         return s.toString();
     }
 
