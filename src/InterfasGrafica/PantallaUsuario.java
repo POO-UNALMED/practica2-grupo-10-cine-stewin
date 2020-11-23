@@ -29,7 +29,6 @@ import java.util.Vector;
 public class PantallaUsuario  extends Application {
     public static Empleado empleado = new Empleado();
     public static Cliente cliente = new Cliente();
-    public static Funcion funcionn = new Funcion();
     public void init(){
 
     }
@@ -51,6 +50,12 @@ public class PantallaUsuario  extends Application {
         auxiliar.setAlignment(Pos.CENTER);
         BorderPane.setMargin(auxiliar,new Insets(0,0,25,0));
         return auxiliar;
+    }
+    /*Metodo que me ayuda a definir el estilo de los botones*/
+    public void definirBotones(Button boton){
+        boton.setMinHeight(40);
+        boton.setMinWidth(60);
+        boton.setAlignment(Pos.CENTER);
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -222,6 +227,7 @@ public class PantallaUsuario  extends Application {
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
+                                        /*En este vector estan guardadas todas las funciones del dia que se selecciono*/
                                         Vector<Funcion> funcionesDia = Cliente.getClienteActual().consultarFunciones(Integer.parseInt(valoresDia[0]),salasXCiudad.get(Integer.parseInt(valoresSala[0])-1));
                                         Label funcionesDelDia = new Label("Funciones del día y sus precios en\n"+"           [dinero($) || puntos(P)]\n"+"         ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n"+Cliente.getClienteActual().consultarFunciones(funcionesDia).toString());
                                         definirEstilo(funcionesDelDia,15);
@@ -233,6 +239,7 @@ public class PantallaUsuario  extends Application {
                                         FieldPanel funcion = new FieldPanel("",criteriosFuncion,"",valoresFuncion,habilitadosFuncion);
                                         GridPane auxiliarFuncion = centarFieldPanel(funcion);
                                         panelEstructura.setBottom(auxiliarFuncion);
+
                                         funcion.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                             @Override
                                             public void handle(MouseEvent event) {
@@ -241,7 +248,7 @@ public class PantallaUsuario  extends Application {
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
-                                                Label asientos = new Label(funcionn.mostrarPuestos());
+                                                Label asientos = new Label(funcionesDia.get(Integer.parseInt(valoresFuncion[0])-1).mostrarPuestos());
                                                 definirEstilo(asientos,15);
                                                 panelEstructura.setCenter(asientos);
                                                 /*Hacemos otro FieldPanel para pedir el asiento(Please stop :'v)*/
@@ -255,9 +262,81 @@ public class PantallaUsuario  extends Application {
                                                 puestoElegir.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                                     @Override
                                                     public void handle(MouseEvent event) {
-                                                        Label frase = new Label("Por favor elija su medio de pago\n"+"Saldo en dinero: ");
+                                                        try {
+                                                            puestoElegir.GuardarDatos();
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        Label frase = new Label("Por favor elija su medio de pago\n"+"Saldo en dinero: " + Cliente.getClienteActual().getCuentaBancaria().getSaldo()+"\n"+
+                                                                "Saldo en puntos: " + Cliente.getClienteActual().getCuentaPuntos().getPuntos());
                                                         definirEstilo(frase,15);
                                                         panelEstructura.setCenter(frase);
+                                                        Button pagarDinero = new Button("Pagar con dinero");
+                                                        Button pagarPuntos = new Button("Pagar con puntos");
+                                                        GridPane menuPago = new GridPane();
+                                                        menuPago.add(pagarDinero,0,0);
+                                                        menuPago.add(pagarPuntos,1,0);
+                                                        menuPago.setVgap(8);
+                                                        menuPago.setHgap(8);
+                                                        menuPago.setAlignment(Pos.CENTER);
+                                                        definirBotones(pagarDinero);
+                                                        definirBotones(pagarPuntos);
+                                                        panelEstructura.setBottom(menuPago);
+                                                        BorderPane.setMargin(menuPago,new Insets(0,0,25,0));
+                                                        pagarDinero.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                                            @Override
+                                                            public void handle(MouseEvent event) {
+                                                                if(Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= 20000){
+                                                                    /*En este vector almacenamos el numero del puesto que se ha elegido*/
+                                                                    Vector<Integer> puestoElegido = new Vector<Integer>();
+                                                                    puestoElegido.add(Integer.parseInt(valoresPuesto[0]));
+                                                                    Cliente.getClienteActual().reservarPuestos(puestoElegido,funcionesDia.get(Integer.parseInt(valoresFuncion[0])-1));
+                                                                    empleado.transaccionDinero(Cliente.getClienteActual(),20000);
+                                                                    primaryStage.close();
+                                                                    try {
+                                                                        start(new Stage());
+                                                                    } catch (Exception e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                    VentanaInformacion.showing("Confirmar compra","Reserva hecha satisfacctoriamente","Aceptar",400,100);
+                                                                }else{
+                                                                    primaryStage.close();
+                                                                    try {
+                                                                        start(new Stage());
+                                                                    } catch (Exception e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                    VentanaInformacion.showing("Compra rechazada","No tienes el saldo suficiente","Aceptar",400,100);
+                                                                }
+                                                            }
+                                                        });
+                                                        pagarPuntos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                                            @Override
+                                                            public void handle(MouseEvent event) {
+                                                                if(Cliente.getClienteActual().getCuentaPuntos().getPuntos() >= 3000){
+                                                                    /*En este vector almacenamos el numero del puesto que se ha elegido*/
+                                                                    Vector<Integer> puestoElegido = new Vector<Integer>();
+                                                                    puestoElegido.add(Integer.parseInt(valoresPuesto[0]));
+                                                                    Cliente.getClienteActual().reservarPuestos(puestoElegido,funcionesDia.get(Integer.parseInt(valoresFuncion[0])-1),true);
+                                                                    empleado.transaccionPuntos(Cliente.getClienteActual(),3000);
+                                                                    primaryStage.close();
+                                                                    try {
+                                                                        start(new Stage());
+                                                                    } catch (Exception e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                    VentanaInformacion.showing("Confirmar compra","Reserva hecha satisfacctoriamente","Aceptar",400,100);
+                                                                }else{
+                                                                    primaryStage.close();
+                                                                    try {
+                                                                        start(new Stage());
+                                                                    } catch (Exception e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                    VentanaInformacion.showing("Compra rechazada","No tienes el saldo suficiente","Aceptar",400,100);
+                                                                }
+                                                            }
+                                                        });
                                                     }
                                                 });
                                             }
@@ -266,9 +345,12 @@ public class PantallaUsuario  extends Application {
                                 });
                             }
                         });
+
                     }
                 });
             }
         });
+
+        /*200 lineas solo para comprar un boleto :v*/
     }
 }
