@@ -388,5 +388,77 @@ public class PantallaUsuario  extends Application {
 
             }
         });
+
+        cambiarReservas.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Label tituloCambioPuesto = new Label("Cambio de puesto");
+                definirEstilo(tituloCambioPuesto,25);
+                panelPrincipal.getChildren().remove(0);
+                panelPrincipal.getChildren().remove(0);
+                panelPrincipal.getChildren().addAll(menu,tituloCambioPuesto);
+                if(empleado.numeroFuncionesDisponibles(Cliente.getClienteActual())<=0){
+                    Label noFunciones = new Label("No reservas activas!!");
+                    definirEstilo(noFunciones,15);
+                    panelEstructura.setCenter(noFunciones);
+                }else{
+                    Label funcionesDisponibles = new Label(empleado.funcionesDisponibles(Cliente.getClienteActual()).toString());
+                    definirEstilo(funcionesDisponibles,15);
+                    panelEstructura.setCenter(funcionesDisponibles);
+                    String[] criteriosCambio = new String[] {"Elija el numero de la reserva a cambiar"};
+                    String[] valoresCambio = new String[] {""};
+                    boolean[] habilitadosCambio = new boolean[] {};
+                    FieldPanel puestoCambio = new FieldPanel("",criteriosCambio,"",valoresCambio,habilitadosCambio);
+                    GridPane auxiliarCambio = centarFieldPanel(puestoCambio);
+                    panelEstructura.setBottom(auxiliarCambio);
+                    puestoCambio.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            /*Pedimos los datos*/
+                            try {
+                                puestoCambio.GuardarDatos();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            /*Con esto vaciamos los puestos*/
+                            empleado.vaciarReserva(Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getFuncion(),Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getAsientosElegidos());
+                            /*Mostramos los nuevos asientos para que se pueda elegir*/
+                            Label nuevosAsiento = new Label(Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getFuncion().mostrarPuestos());
+                            definirEstilo(nuevosAsiento,15);
+                            panelEstructura.setCenter(nuevosAsiento);
+                            /*Con un FieldPanel vamos a pedir el nuevos asientos*/
+                            String[] criteriosCambio1 = new String[] {"Elija el nuevo asiento"};
+                            String[] valoresCambio1 = new String[] {""};
+                            boolean[] habilitadosCambio1 = new boolean[] {};
+                            Vector<Integer> puestosNuevos = new Vector<Integer>();
+                            FieldPanel puestoCambio1 = new FieldPanel("",criteriosCambio1,"",valoresCambio1,habilitadosCambio1);
+                            GridPane auxiliarCambio1 = centarFieldPanel(puestoCambio1);
+                            panelEstructura.setBottom(auxiliarCambio1);
+                            puestoCambio1.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    try {
+                                        puestoCambio1.GuardarDatos();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    puestosNuevos.add(Integer.parseInt(valoresCambio1[0]));
+                                    empleado.cambiarPuestos(Cliente.getClienteActual().cartera.get(Integer.parseInt(valoresCambio[0])).getFuncion(),puestosNuevos);
+                                    empleado.cambiarNuevosAsientos(Cliente.getClienteActual(),Integer.parseInt(valoresCambio[0]),puestosNuevos);
+                                    primaryStage.close();
+                                    try {
+                                        start(new Stage());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    VentanaInformacion.showing("Confirmar cambio de reserva","Ha cambio su reserva correctamente!!","Aceptar",400,100);
+                                }
+                            });
+                        }
+                    });
+                }
+
+            }
+        });
     }
 }
