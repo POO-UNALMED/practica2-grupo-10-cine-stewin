@@ -74,6 +74,8 @@ public class PantallaUsuario  extends Application {
         MenuItem salir = new MenuItem("Salir");
         MenuItem acercaDe = new MenuItem("Acerca de");
         MenuItem comprarBoleto = new MenuItem("Comprar boletos");
+        MenuItem consultarReservas = new MenuItem("Consultar reservas");
+        MenuItem cambiarReservas = new MenuItem("Cambiar reserva");
 
         /*Definir demas elementos del menu procesos*/
         //Definimos los conponentes de cada menu
@@ -83,6 +85,8 @@ public class PantallaUsuario  extends Application {
         archivo.getItems().add(usuario);
         archivo.getItems().add(salir);
         procesos.getItems().add(comprarBoleto);
+        procesos.getItems().add(consultarReservas);
+        procesos.getItems().add(cambiarReservas);
         ayuda.getItems().add(acercaDe);
 
         //Metodos para definir estilos
@@ -352,5 +356,37 @@ public class PantallaUsuario  extends Application {
         });
 
         /*200 lineas solo para comprar un boleto :v*/
+        consultarReservas.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Label tituloReserva = new Label("Consultar reservas");
+                panelPrincipal.getChildren().remove(0);
+                panelPrincipal.getChildren().remove(0);
+                definirEstilo(tituloReserva,25);
+                panelPrincipal.getChildren().addAll(menu,tituloReserva);
+
+                Label reservasConsulta = new Label(Cliente.getClienteActual().consultarReservas());
+                definirEstilo(reservasConsulta,15);
+                panelEstructura.setCenter(reservasConsulta);
+                Button volverReserva = new Button("Volver");
+
+                definirBotones(volverReserva);
+                panelEstructura.setBottom(volverReserva);
+                BorderPane.setAlignment(volverReserva,Pos.CENTER);
+                BorderPane.setMargin(volverReserva,new Insets(0,0,25,0));
+                volverReserva.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        primaryStage.close();
+                        try {
+                            start(new Stage());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        });
     }
 }
