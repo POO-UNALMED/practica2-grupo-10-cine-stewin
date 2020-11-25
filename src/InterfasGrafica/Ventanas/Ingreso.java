@@ -1,10 +1,13 @@
 package InterfasGrafica.Ventanas;
 
 import InterfasGrafica.FieldPanel;
+import ManejoExcepciones.ErrorAplicacion;
+import ManejoExcepciones.invalidDataType_Exception;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -16,7 +19,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Ingreso extends VentanaGenerica{
-    public static void showing(Stage stage){
+    protected static final String Exception = null;
+
+	public static void showing(Stage stage){
         pantallaInicio = stage;
         /*/Se crean los diferentes elementos con los que se van a trabajar*/
         Stage ventanaIngreso = new Stage();
@@ -69,25 +74,45 @@ public class Ingreso extends VentanaGenerica{
             public void handle(MouseEvent event) {
                 try {
                     fieldPane.GuardarDatos();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch ( Exception e ) {
+                    if(e.getMessage() == "Por favor llenar todos los espacios") {
+                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                		alert.setTitle(e.getLocalizedMessage());
+                		alert.setHeaderText(null);
+                		alert.setContentText(e.getMessage());
+                		alert.showAndWait();
+                    }
+                    
                 }
                 /*Se comprueba la identificacion de la persona y dependiendo de eso, se dedice a que ventana se llevara*/
-                if(empleado.comprobarRegistro(Integer.parseInt(valores[0]))){
-                    /*En caso de que la identidad sea confirmada, cerramos los stage actuales*/
-                    ventanaIngreso.close();
-                    stage.close();
-                    try {
-                        /*Y lo llevamos a la ventana de usuario*/
-                        pantallaUsuario.start(new Stage());
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                try {
+                	if(empleado.comprobarRegistro(Integer.parseInt(valores[0]))){
+                        /*En caso de que la identidad sea confirmada, cerramos los stage actuales*/
+                        ventanaIngreso.close();
+                        stage.close();
+                        try {
+                            /*Y lo llevamos a la ventana de usuario*/
+                            pantallaUsuario.start(new Stage());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                }else{
-                    /*En caso de que no se pueda confirmar su identidad, le mostramos una ventan diciendo que su identidad
-                      es incorrecta*/
-                    VentanaInformacion.showing("Informacion","Identificacion incorrecta","Aceptar",400,100);
-                    ventanaIngreso.close();
+                    else{
+                        /*En caso de que no se pueda confirmar su identidad, le mostramos una ventan diciendo que su identidad
+                          es incorrecta*/
+                        VentanaInformacion.showing("Informacion","Identificacion incorrecta","Aceptar",400,100);
+                        ventanaIngreso.close();
+                    }
+                } catch (Exception e) {
+                	if(!(e.getLocalizedMessage().equals("For input string: " + (char)34 + (char)34))) {
+                		invalidDataType_Exception a = new invalidDataType_Exception("Identificacion Invalida");
+                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                		alert.setTitle(a.getMensaje_Error());
+                		alert.setHeaderText(null);
+                		alert.setContentText("Identificacion Invalida: " + e.getLocalizedMessage());
+                		alert.showAndWait();
+                	}
+                	
                 }
             }
         });

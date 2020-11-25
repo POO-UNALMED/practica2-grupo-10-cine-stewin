@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Vector;
 
+import ManejoExcepciones.blankText_Exception;
+import ManejoExcepciones.invalidDataType_Exception;
+
 /*La clase empleado sera la encargada de mostrarle muchos datos al usuario para que el pueda
   interactuar con los mismos y editar/cambiar/crear la configuracion del cine(opciones)*/
 public class Empleado extends Persona {
@@ -125,6 +128,15 @@ public class Empleado extends Persona {
         }
         return confirmaContrasenia;
     }
+    public void comprobarRegistro(String lol) throws Exception  {
+    	if(lol.equals("")) {
+    		throw new blankText_Exception("Por favor llenar todos los espacios");
+    	}
+    	else {
+    		throw new invalidDataType_Exception("Identificacion Invalida: For input string: " + lol);
+    	}
+    }
+    
 
     /*Metodo encargado de registrar clientes*/
     public static void registarCliente(int identificacion, String nombre, String correo, String direccion) {

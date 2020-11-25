@@ -1,5 +1,8 @@
 package InterfasGrafica;
 
+import ManejoExcepciones.blankText_Exception;
+import ManejoExcepciones.invalidDataType_Exception;
+import ManejoExcepciones.invalidData_Exception;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -90,15 +93,25 @@ public class FieldPanel extends Pane {
       contenido de los textfield*/
     public void GuardarDatos() throws Exception {
         GridPane grid = ((GridPane) this.getChildren().get(0));
+        
         for (int i = 0; i < criterios.length; i++) {
             TextField a;
+            
             a = (TextField) grid.getChildren().get((2 * i) + 1);
+            
             if (!(a.getText()).equals("")) {
-                this.valores[i] = a.getText();
-                a.setText("");
+            	try {
+            		this.valores[i] = a.getText();
+            		a.setText("");
+            	} catch (Exception e) {
+            		throw new invalidData_Exception("Identificacion Invalida: " + e.getLocalizedMessage());
+            	}
+                
             } else {
-                throw new Exception(this.criterios[i]);
+            	throw new blankText_Exception("Por favor llenar todos los espacios");
             }
+            
         }
+        
     }
 }

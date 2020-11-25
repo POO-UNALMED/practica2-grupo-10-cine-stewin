@@ -1,6 +1,7 @@
 package InterfasGrafica.Ventanas;
 
 import InterfasGrafica.FieldPanel;
+import ManejoExcepciones.invalidDataType_Exception;
 import baseDatos.BaseDeDatos;
 import gestorAplicacion.master.Empleado;
 import javafx.event.EventHandler;
@@ -83,19 +84,42 @@ public class CrearMenuRegistro extends VentanaGenerica {
                 try {
                     probando.GuardarDatos();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                		alert.setHeaderText(null);
+                		alert.setContentText(e.getMessage());
+                		alert.showAndWait();
+                    }
+                	else if(e.getMessage().equals("Identificacion Invalida: " + e.getLocalizedMessage())) {
+                		Alert alert = new Alert(Alert.AlertType.WARNING);
+                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                		alert.setHeaderText(null);
+                		alert.setContentText(e.getMessage());
+                		alert.showAndWait();
+                	}
                 }
                 /*Comprobamos que el usuario no este registrado en la base de datos y dependiendo del caso, imprimimos el mensaje*/
-                if (empleado.comprobarRegistro(Integer.parseInt(valores[1]))) {
-                    ventanaRegistro.close();
-                    /*Si el usuario ya se encuentra registrado cerramos la ventana de registro y se lo avisamos*/
-                    VentanaInformacion.showing("Informacion", "Usuario ya registrado", "Aceptar", 400, 100);
-                } else {
-                    /*Si el usuario no se encuentra registrado le mostramos un mensaje sobre su registro correcto*/
-                    Empleado.registarCliente(Integer.parseInt(valores[1]), valores[2], valores[3], valores[4]);
-                    ventanaRegistro.close();
-                    VentanaInformacion.showing("Informacion", "Usuario registrado correctamente", "Aceptar", 400, 100);
+                try {
+                	if (empleado.comprobarRegistro(Integer.parseInt(valores[1]))) {
+                        ventanaRegistro.close();
+                        /*Si el usuario ya se encuentra registrado cerramos la ventana de registro y se lo avisamos*/
+                        VentanaInformacion.showing("Informacion", "Usuario ya registrado", "Aceptar", 400, 100);
+                    } else {
+                        /*Si el usuario no se encuentra registrado le mostramos un mensaje sobre su registro correcto*/
+                        Empleado.registarCliente(Integer.parseInt(valores[1]), valores[2], valores[3], valores[4]);
+                        ventanaRegistro.close();
+                        VentanaInformacion.showing("Informacion", "Usuario registrado correctamente", "Aceptar", 400, 100);
+                    }
+                } catch(Exception e) {
+                	
+                	Alert alert = new Alert(Alert.AlertType.WARNING);
+            		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+            		alert.setHeaderText(null);
+            		alert.setContentText("Identificacion Invalida: " + e.getMessage());
+            		alert.showAndWait();
                 }
+                
             }
         });
 

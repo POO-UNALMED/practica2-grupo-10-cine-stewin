@@ -2,6 +2,8 @@ package InterfasGrafica;
 
 import InterfasGrafica.Ventanas.VentanaGenerica;
 import InterfasGrafica.Ventanas.VentanaInformacion;
+import ManejoExcepciones.invalidData_Exception;
+import ManejoExcepciones.saldo_Exception;
 import baseDatos.BaseDeDatos;
 import baseDatos.Escribir;
 import gestorAplicacion.master.Cine;
@@ -199,7 +201,22 @@ public class PantallaUsuario extends Application {
                         try {
                             probando.GuardarDatos();
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                        		alert.setHeaderText(null);
+                        		alert.setContentText(e.getMessage());
+                        		alert.showAndWait();
+                            }
+                            else if(e.getMessage().contains("Array index out of range:"))  {
+                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                        		alert.setHeaderText(null);
+                        		alert.setContentText(a.getMessage());
+                        		alert.showAndWait();
+                            }
+                            
                         }
 
                         /*Aca conseguimos todas las salas de cine en la ciudad que el usuario ha elegido y se las mostramos*/
@@ -226,7 +243,21 @@ public class PantallaUsuario extends Application {
                                 try {
                                     sala.GuardarDatos();
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                		alert.setHeaderText(null);
+                                		alert.setContentText(e.getMessage());
+                                		alert.showAndWait();
+                                    }
+                                    else if(e.getMessage().contains("Array index out of range:"))  {
+                                    	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                		alert.setHeaderText(null);
+                                		alert.setContentText(a.getMessage());
+                                		alert.showAndWait();
+                                    }
                                 }
                                 /*Mostramos la semana al usuario para que pueda elegir un dia*/
                                 Label mostrarSemana = new Label("  Ha elegio el cine " + salasXCiudad.get(Integer.parseInt(valoresSala[0]) - 1).getNombre() + "\n" + "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯" + empleado.mostrarSemana().toString());
@@ -250,7 +281,21 @@ public class PantallaUsuario extends Application {
                                         try {
                                             diaFuncion.GuardarDatos();
                                         } catch (Exception e) {
-                                            e.printStackTrace();
+                                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                        		alert.setHeaderText(null);
+                                        		alert.setContentText(e.getMessage());
+                                        		alert.showAndWait();
+                                            }
+                                            else if(e.getMessage().contains("Array index out of range:"))  {
+                                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                        		alert.setHeaderText(null);
+                                        		alert.setContentText(a.getMessage());
+                                        		alert.showAndWait();
+                                            }
                                         }
 
                                         /*En este vector estan guardadas todas las funciones del dia que se selecciono*/
@@ -278,7 +323,21 @@ public class PantallaUsuario extends Application {
                                                 try {
                                                     funcion.GuardarDatos();
                                                 } catch (Exception e) {
-                                                    e.printStackTrace();
+                                                	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                		alert.setHeaderText(null);
+                                                		alert.setContentText(e.getMessage());
+                                                		alert.showAndWait();
+                                                    }
+                                                    else if(e.getMessage().contains("Array index out of range:"))  {
+                                                    	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                		alert.setHeaderText(null);
+                                                		alert.setContentText(a.getMessage());
+                                                		alert.showAndWait();
+                                                    }
                                                 }
                                                 /*Mostramos los asientos disponibles en el centro de la pantalla*/
                                                 Label asientos = new Label(funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1).mostrarPuestos());
@@ -302,7 +361,21 @@ public class PantallaUsuario extends Application {
                                                         try {
                                                             puestoElegir.GuardarDatos();
                                                         } catch (Exception e) {
-                                                            e.printStackTrace();
+                                                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                        		alert.setHeaderText(null);
+                                                        		alert.setContentText(e.getMessage());
+                                                        		alert.showAndWait();
+                                                            }
+                                                            else if(e.getMessage().contains("Array index out of range:"))  {
+                                                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                        		alert.setHeaderText(null);
+                                                        		alert.setContentText(a.getMessage());
+                                                        		alert.showAndWait();
+                                                            }
                                                         }
                                                         /*Le mostramos al usuario su saldo*/
                                                         Label frase = new Label("Por favor elija su medio de pago\n" + "Saldo en dinero: " + Cliente.getClienteActual().getCuentaBancaria().getSaldo() + "\n" +
@@ -329,6 +402,7 @@ public class PantallaUsuario extends Application {
                                                         pagarDinero.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                                             @Override
                                                             public void handle(MouseEvent event) {
+                                                            	
                                                                 if (Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= 20000) {
 
                                                                     /*En este vector almacenamos el numero del puesto que se ha elegido*/
@@ -347,7 +421,21 @@ public class PantallaUsuario extends Application {
                                                                     try {
                                                                         start(new Stage());
                                                                     } catch (Exception e) {
-                                                                        e.printStackTrace();
+                                                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                    		alert.setHeaderText(null);
+                                                                    		alert.setContentText(e.getMessage());
+                                                                    		alert.showAndWait();
+                                                                        }
+                                                                        else if(e.getMessage().contains("Array index out of range:"))  {
+                                                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                    		alert.setHeaderText(null);
+                                                                    		alert.setContentText(a.getMessage());
+                                                                    		alert.showAndWait();
+                                                                        }
                                                                     }
                                                                     VentanaInformacion.showing("Confirmar compra", "Reserva hecha satisfacctoriamente", "Aceptar", 400, 100);
 
@@ -357,9 +445,24 @@ public class PantallaUsuario extends Application {
                                                                     try {
                                                                         start(new Stage());
                                                                     } catch (Exception e) {
-                                                                        e.printStackTrace();
+                                                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                    		alert.setHeaderText(null);
+                                                                    		alert.setContentText(e.getMessage());
+                                                                    		alert.showAndWait();
+                                                                        }
+                                                                        else if(e.getMessage().contains("Array index out of range:"))  {
+                                                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                    		alert.setHeaderText(null);
+                                                                    		alert.setContentText(a.getMessage());
+                                                                    		alert.showAndWait();
+                                                                        }
                                                                     }
-                                                                    VentanaInformacion.showing("Compra rechazada", "No tienes el saldo suficiente", "Aceptar", 400, 100);
+                                                                    
+                
                                                                 }
                                                             }
                                                         });
@@ -379,7 +482,21 @@ public class PantallaUsuario extends Application {
                                                                     try {
                                                                         start(new Stage());
                                                                     } catch (Exception e) {
-                                                                        e.printStackTrace();
+                                                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                    		alert.setHeaderText(null);
+                                                                    		alert.setContentText(e.getMessage());
+                                                                    		alert.showAndWait();
+                                                                        }
+                                                                        else if(e.getMessage().contains("Array index out of range:"))  {
+                                                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                    		alert.setHeaderText(null);
+                                                                    		alert.setContentText(a.getMessage());
+                                                                    		alert.showAndWait();
+                                                                        }
                                                                     }
                                                                     VentanaInformacion.showing("Confirmar compra", "Reserva hecha satisfacctoriamente", "Aceptar", 400, 100);
                                                                 } else {
@@ -387,9 +504,23 @@ public class PantallaUsuario extends Application {
                                                                     try {
                                                                         start(new Stage());
                                                                     } catch (Exception e) {
-                                                                        e.printStackTrace();
+                                                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                    		alert.setHeaderText(null);
+                                                                    		alert.setContentText(e.getMessage());
+                                                                    		alert.showAndWait();
+                                                                        }
+                                                                        else if(e.getMessage().contains("Array index out of range:"))  {
+                                                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                    		alert.setHeaderText(null);
+                                                                    		alert.setContentText(a.getMessage());
+                                                                    		alert.showAndWait();
+                                                                        }
                                                                     }
-                                                                    VentanaInformacion.showing("Compra rechazada", "No tienes el saldo suficiente", "Aceptar", 400, 100);
+                                                                    new saldo_Exception("Saldo Insuficiente");
                                                                 }
                                                             }
                                                         });
@@ -440,7 +571,21 @@ public class PantallaUsuario extends Application {
                         try {
                             start(new Stage());
                         } catch (Exception e) {
-                            e.printStackTrace();
+                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                        		alert.setHeaderText(null);
+                        		alert.setContentText(e.getMessage());
+                        		alert.showAndWait();
+                            }
+                            else if(e.getMessage().contains("Array index out of range:"))  {
+                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                        		alert.setHeaderText(null);
+                        		alert.setContentText(a.getMessage());
+                        		alert.showAndWait();
+                            }
                         }
                     }
                 });
@@ -490,7 +635,21 @@ public class PantallaUsuario extends Application {
                             try {
                                 puestoCambio.GuardarDatos();
                             } catch (Exception e) {
-                                e.printStackTrace();
+                            	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                	Alert alert = new Alert(Alert.AlertType.WARNING);
+                            		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                            		alert.setHeaderText(null);
+                            		alert.setContentText(e.getMessage());
+                            		alert.showAndWait();
+                                }
+                                else if(e.getMessage().contains("Array index out of range:"))  {
+                                	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                	Alert alert = new Alert(Alert.AlertType.WARNING);
+                            		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                            		alert.setHeaderText(null);
+                            		alert.setContentText(a.getMessage());
+                            		alert.showAndWait();
+                                }
                             }
 
                             /*Con esto vaciamos los puestos para mostrarlos de nuevo*/
@@ -518,7 +677,21 @@ public class PantallaUsuario extends Application {
                                     try {
                                         puestoCambio1.GuardarDatos();
                                     } catch (Exception e) {
-                                        e.printStackTrace();
+                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                    		alert.setHeaderText(null);
+                                    		alert.setContentText(e.getMessage());
+                                    		alert.showAndWait();
+                                        }
+                                        else if(e.getMessage().contains("Array index out of range:"))  {
+                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                    		alert.setHeaderText(null);
+                                    		alert.setContentText(a.getMessage());
+                                    		alert.showAndWait();
+                                        }
                                     }
                                     /*Obtenemos el numero del puesto que vamos a cambiar*/
                                     puestosNuevos.add(Integer.parseInt(valoresCambio1[0]));
@@ -533,7 +706,21 @@ public class PantallaUsuario extends Application {
                                     try {
                                         start(new Stage());
                                     } catch (Exception e) {
-                                        e.printStackTrace();
+                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                    		alert.setHeaderText(null);
+                                    		alert.setContentText(e.getMessage());
+                                    		alert.showAndWait();
+                                        }
+                                        else if(e.getMessage().contains("Array index out of range:"))  {
+                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                    		alert.setHeaderText(null);
+                                    		alert.setContentText(a.getMessage());
+                                    		alert.showAndWait();
+                                        }
                                     }
                                     VentanaInformacion.showing("Confirmar cambio de reserva", "Ha cambio su reserva correctamente!!", "Aceptar", 400, 100);
                                 }
@@ -592,7 +779,21 @@ public class PantallaUsuario extends Application {
                                 try {
                                     puestoComida.GuardarDatos();
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                		alert.setHeaderText(null);
+                                		alert.setContentText(e.getMessage());
+                                		alert.showAndWait();
+                                    }
+                                    else if(e.getMessage().contains("Array index out of range:"))  {
+                                    	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                		alert.setHeaderText(null);
+                                		alert.setContentText(a.getMessage());
+                                		alert.showAndWait();
+                                    }
                                 }
 
                                 /*Verificamos que el usuario tenga los puntos suficientes para poder comprar la cantidad que ha elegido*/
@@ -605,7 +806,21 @@ public class PantallaUsuario extends Application {
                                     try {
                                         start(new Stage());
                                     } catch (Exception e) {
-                                        e.printStackTrace();
+                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                    		alert.setHeaderText(null);
+                                    		alert.setContentText(e.getMessage());
+                                    		alert.showAndWait();
+                                        }
+                                        else if(e.getMessage().contains("Array index out of range:"))  {
+                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                    		alert.setHeaderText(null);
+                                    		alert.setContentText(a.getMessage());
+                                    		alert.showAndWait();
+                                        }
                                     }
                                     VentanaInformacion.showing("Confirmar compra comida", "Ha comprado su comida correctamente!!", "Aceptar", 400, 100);
 
@@ -618,7 +833,7 @@ public class PantallaUsuario extends Application {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    VentanaInformacion.showing("Compra fallida", "No cuenta con los suficientes puntos!!", "Aceptar", 400, 100);
+                                    new saldo_Exception("Saldo Insuficiente");
                                 }
                             }
                         });
@@ -636,7 +851,21 @@ public class PantallaUsuario extends Application {
                                 try {
                                     puestoComida.GuardarDatos();
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                		alert.setHeaderText(null);
+                                		alert.setContentText(e.getMessage());
+                                		alert.showAndWait();
+                                    }
+                                    else if(e.getMessage().contains("Array index out of range:"))  {
+                                    	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                		alert.setHeaderText(null);
+                                		alert.setContentText(a.getMessage());
+                                		alert.showAndWait();
+                                    }
                                 }
                                 if (Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= empleado.getPrecioDinero().get(Integer.parseInt(valoresComida[0]) - 1) * Integer.parseInt(valoresComida[1])) {
                                     empleado.comprarComidas(Cliente.getClienteActual(), 1, Integer.parseInt(valoresComida[1]), Integer.parseInt(valoresComida[0]));
@@ -654,7 +883,7 @@ public class PantallaUsuario extends Application {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    VentanaInformacion.showing("Compra fallida", "No cuenta el dinero suficiente!!", "Aceptar", 400, 100);
+                                    new saldo_Exception("Saldo Insuficiente");
                                 }
                             }
                         });
