@@ -638,6 +638,8 @@ public class PantallaUsuario extends Application {
                     Label noFunciones = new Label("No reservas activas!!");
                     definirEstilo(noFunciones, 15);
                     panelEstructura.setCenter(noFunciones);
+                    Label relleno = new Label("");
+                    panelEstructura.setBottom(relleno);
 
                     /*En Caso de que si se tengan reservas activas seguimos con esta opcion*/
                 } else {

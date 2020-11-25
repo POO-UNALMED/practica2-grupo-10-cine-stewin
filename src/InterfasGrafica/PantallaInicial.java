@@ -35,7 +35,6 @@ public class PantallaInicial extends Application {
     public void init() {
         Leer.Leer();
         BaseDeDatos.relacionar();
-        System.out.println(BaseDeDatos.getClientes().size());
         empleado.enlazarFuncionesYCines();
         empleado.definirSemanaFunciones();
     }
