@@ -662,6 +662,83 @@ public class PantallaUsuario extends Application {
                             /*Pedimos los datos*/
                             try {
                                 puestoCambio.GuardarDatos();
+                                /*Con esto vaciamos los puestos para mostrarlos de nuevo*/
+                                empleado.vaciarReserva(Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getFuncion(), Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getAsientosElegidos());
+
+                                /*Mostramos los nuevos asientos para que se pueda elegir*/
+                                Label nuevosAsiento = new Label(Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getFuncion().mostrarPuestos());
+                                definirEstilo(nuevosAsiento, 15);
+                                panelEstructura.setCenter(nuevosAsiento);
+
+                                /*Con un FieldPanel vamos a pedir el nuevos asientos*/
+                                String[] criteriosCambio1 = new String[]{"Elija el nuevo asiento"};
+                                String[] valoresCambio1 = new String[]{""};
+                                boolean[] habilitadosCambio1 = new boolean[]{};
+                                Vector<Integer> puestosNuevos = new Vector<Integer>();
+                                FieldPanel puestoCambio1 = new FieldPanel("", criteriosCambio1, "", valoresCambio1, habilitadosCambio1);
+                                /*Centramos*/
+                                GridPane auxiliarCambio1 = centarFieldPanel(puestoCambio1);
+                                panelEstructura.setBottom(auxiliarCambio1);
+
+                                /*Con este evento pediremos la informacion del asiento a cambiar*/
+                                puestoCambio1.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent event) {
+                                        try {
+                                            puestoCambio1.GuardarDatos();
+                                            /*Obtenemos el numero del puesto que vamos a cambiar*/
+                                            puestosNuevos.add(Integer.parseInt(valoresCambio1[0]));
+
+                                            /*Metodo que me permite cambiar los puestos en la resetva*/
+                                            empleado.cambiarPuestos(Cliente.getClienteActual().cartera.get(Integer.parseInt(valoresCambio[0])).getFuncion(), puestosNuevos);
+                                            /*Metodo que me pone los asientos de la funcion como ocupados*/
+                                            empleado.cambiarNuevosAsientos(Cliente.getClienteActual(), Integer.parseInt(valoresCambio[0]), puestosNuevos);
+
+                                            /*Cerramos el stage actual para abrir uno desde 0 y mostramos una ventana de confirmacion de cambio*/
+                                            primaryStage.close();
+                                            try {
+                                                start(new Stage());
+                                            } catch (Exception e) {
+                                                if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                    alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                    alert.setHeaderText(null);
+                                                    alert.setContentText(e.getMessage());
+                                                    alert.showAndWait();
+                                                }
+                                                else if(e.getMessage().contains("Array index out of range:"))  {
+                                                    invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                    alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                    alert.setHeaderText(null);
+                                                    alert.setContentText(a.getMessage());
+                                                    alert.showAndWait();
+                                                }
+                                            }
+                                            VentanaInformacion.showing("Confirmar cambio de reserva", "Ha cambio su reserva correctamente!!", "Aceptar", 400, 100);
+                                        } catch (Exception e) {
+                                            if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                alert.setHeaderText(null);
+                                                alert.setContentText(e.getMessage());
+                                                alert.showAndWait();
+                                            }
+                                            else if(e.getMessage().contains("Array index out of range:"))  {
+                                                invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                alert.setHeaderText(null);
+                                                alert.setContentText(a.getMessage());
+                                                alert.showAndWait();
+                                            }
+                                            else{
+                                                System.out.println("Elegir el numero de asiento mal");  ///----------------
+                                            }
+                                        }
+
+                                    }
+                                });
                             } catch (Exception e) {
                             	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
                                 	Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -678,81 +755,11 @@ public class PantallaUsuario extends Application {
                             		alert.setContentText(a.getMessage());
                             		alert.showAndWait();
                                 }
+                                else{
+                                    System.out.println("Error en el tipo de dato de la reserva");  //------------------
+                                }
                             }
 
-                            /*Con esto vaciamos los puestos para mostrarlos de nuevo*/
-                            empleado.vaciarReserva(Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getFuncion(), Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getAsientosElegidos());
-
-                            /*Mostramos los nuevos asientos para que se pueda elegir*/
-                            Label nuevosAsiento = new Label(Cliente.getClienteActual().getCartera().get(Integer.parseInt(valoresCambio[0])).getFuncion().mostrarPuestos());
-                            definirEstilo(nuevosAsiento, 15);
-                            panelEstructura.setCenter(nuevosAsiento);
-
-                            /*Con un FieldPanel vamos a pedir el nuevos asientos*/
-                            String[] criteriosCambio1 = new String[]{"Elija el nuevo asiento"};
-                            String[] valoresCambio1 = new String[]{""};
-                            boolean[] habilitadosCambio1 = new boolean[]{};
-                            Vector<Integer> puestosNuevos = new Vector<Integer>();
-                            FieldPanel puestoCambio1 = new FieldPanel("", criteriosCambio1, "", valoresCambio1, habilitadosCambio1);
-                            /*Centramos*/
-                            GridPane auxiliarCambio1 = centarFieldPanel(puestoCambio1);
-                            panelEstructura.setBottom(auxiliarCambio1);
-
-                            /*Con este evento pediremos la informacion del asiento a cambiar*/
-                            puestoCambio1.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    try {
-                                        puestoCambio1.GuardarDatos();
-                                    } catch (Exception e) {
-                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                    		alert.setHeaderText(null);
-                                    		alert.setContentText(e.getMessage());
-                                    		alert.showAndWait();
-                                        }
-                                        else if(e.getMessage().contains("Array index out of range:"))  {
-                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                    		alert.setHeaderText(null);
-                                    		alert.setContentText(a.getMessage());
-                                    		alert.showAndWait();
-                                        }
-                                    }
-                                    /*Obtenemos el numero del puesto que vamos a cambiar*/
-                                    puestosNuevos.add(Integer.parseInt(valoresCambio1[0]));
-
-                                    /*Metodo que me permite cambiar los puestos en la resetva*/
-                                    empleado.cambiarPuestos(Cliente.getClienteActual().cartera.get(Integer.parseInt(valoresCambio[0])).getFuncion(), puestosNuevos);
-                                    /*Metodo que me pone los asientos de la funcion como ocupados*/
-                                    empleado.cambiarNuevosAsientos(Cliente.getClienteActual(), Integer.parseInt(valoresCambio[0]), puestosNuevos);
-
-                                    /*Cerramos el stage actual para abrir uno desde 0 y mostramos una ventana de confirmacion de cambio*/
-                                    primaryStage.close();
-                                    try {
-                                        start(new Stage());
-                                    } catch (Exception e) {
-                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                    		alert.setHeaderText(null);
-                                    		alert.setContentText(e.getMessage());
-                                    		alert.showAndWait();
-                                        }
-                                        else if(e.getMessage().contains("Array index out of range:"))  {
-                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                    		alert.setHeaderText(null);
-                                    		alert.setContentText(a.getMessage());
-                                    		alert.showAndWait();
-                                        }
-                                    }
-                                    VentanaInformacion.showing("Confirmar cambio de reserva", "Ha cambio su reserva correctamente!!", "Aceptar", 400, 100);
-                                }
-                            });
                         }
                     });
                 }
