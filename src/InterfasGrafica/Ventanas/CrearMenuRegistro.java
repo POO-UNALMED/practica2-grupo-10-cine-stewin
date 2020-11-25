@@ -59,9 +59,9 @@ public class CrearMenuRegistro extends VentanaGenerica {
         panelPrincipal.setStyle("-fx-background-color: BLACK");
 
         /*Con FieldPanel vamos a pedir todos nuestros datos*/
-        String[] criterios = new String[]{"ID","Identificacion", "Nombre", "Correo", "Direccion"};
-        String[] valores = new String[]{String.valueOf(BaseDeDatos.getClientes().size()),"", "", "", "", ""};
-        boolean[] habilitados = new boolean[]{false};
+        String[] criterios = new String[]{"Identificacion", "Nombre", "Correo", "Direccion"};
+        String[] valores = new String[]{"", "", "", "", ""};
+        boolean[] habilitados = new boolean[]{};
         FieldPanel probando = new FieldPanel("Criterios", criterios, "Valores", valores, habilitados);
         probando.setStyle("-fx-background-color: BLACK");
 
@@ -101,13 +101,13 @@ public class CrearMenuRegistro extends VentanaGenerica {
                 }
                 /*Comprobamos que el usuario no este registrado en la base de datos y dependiendo del caso, imprimimos el mensaje*/
                 try {
-                	if (empleado.comprobarRegistro(Integer.parseInt(valores[1]))) {
+                	if (empleado.comprobarRegistro(Integer.parseInt(valores[0]))) {
                         ventanaRegistro.close();
                         /*Si el usuario ya se encuentra registrado cerramos la ventana de registro y se lo avisamos*/
                         VentanaInformacion.showing("Informacion", "Usuario ya registrado", "Aceptar", 400, 100);
                     } else {
                         /*Si el usuario no se encuentra registrado le mostramos un mensaje sobre su registro correcto*/
-                        Empleado.registarCliente(Integer.parseInt(valores[1]), valores[2], valores[3], valores[4]);
+                        Empleado.registarCliente(Integer.parseInt(valores[0]), valores[1], valores[2], valores[3]);
                         ventanaRegistro.close();
                         VentanaInformacion.showing("Informacion", "Usuario registrado correctamente", "Aceptar", 400, 100);
                     }
