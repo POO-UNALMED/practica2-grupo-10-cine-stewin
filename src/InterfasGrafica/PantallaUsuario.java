@@ -224,7 +224,7 @@ public class PantallaUsuario extends Application {
                         
                         try {
                         	Vector<Cine> salasXCiudad = empleado.cinesPorCiudad(Cine.getCiudades().get(Integer.parseInt(valores[0]) - 1));
-                        	Label cinesPorCiudad = new Label(" Salas de cine disponibles en la ciudad:\n" + "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  \n" + empleado.cinesPorCiudad(salasXCiudad));
+                        	Label cinesPorCiudad = new Label(" Salas de cine disponibles en la ciudad:\n" + "Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯Â¯  \n" + empleado.cinesPorCiudad(salasXCiudad));
                             definirEstilo(cinesPorCiudad, 15);
                             panelEstructura.setCenter(cinesPorCiudad);
 
@@ -561,8 +561,6 @@ public class PantallaUsuario extends Application {
                         		alert.showAndWait();
                             }
                         }
-                        
-
                     }
                 });
             }
@@ -826,44 +824,48 @@ public class PantallaUsuario extends Application {
                                     }
                                 }
 
-                                /*Verificamos que el usuario tenga los puntos suficientes para poder comprar la cantidad que ha elegido*/
-                                if (Cliente.getClienteActual().getCuentaPuntos().getPuntos() >= empleado.getPrecioPuntos().get(Integer.parseInt(valoresComida[0]) - 1) * Integer.parseInt(valoresComida[1])) {
-                                    /*Si el usuario si cuenta con los puntos suficientes ejecutamos un metodo que nos permite descontarle los puntos necesarios*/
-                                    empleado.comprarComidas(Cliente.getClienteActual(), 0, Integer.parseInt(valoresComida[1]), Integer.parseInt(valoresComida[0]));
+                                try {
+                                    /*Verificamos que el usuario tenga los puntos suficientes para poder comprar la cantidad que ha elegido*/
+                                    if (Cliente.getClienteActual().getCuentaPuntos().getPuntos() >= empleado.getPrecioPuntos().get(Integer.parseInt(valoresComida[0]) - 1) * Integer.parseInt(valoresComida[1])) {
+                                        /*Si el usuario si cuenta con los puntos suficientes ejecutamos un metodo que nos permite descontarle los puntos necesarios*/
+                                        empleado.comprarComidas(Cliente.getClienteActual(), 0, Integer.parseInt(valoresComida[1]), Integer.parseInt(valoresComida[0]));
 
-                                    /*Cerramos el stage actual, abrimos uno nuevo y mostramos una ventana de confirmacion de compra*/
-                                    primaryStage.close();
-                                    try {
-                                        start(new Stage());
-                                    } catch (Exception e) {
-                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                    		alert.setHeaderText(null);
-                                    		alert.setContentText(e.getMessage());
-                                    		alert.showAndWait();
+                                        /*Cerramos el stage actual, abrimos uno nuevo y mostramos una ventana de confirmacion de compra*/
+                                        primaryStage.close();
+                                        try {
+                                            start(new Stage());
+                                        } catch (Exception e) {
+                                            if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                alert.setHeaderText(null);
+                                                alert.setContentText(e.getMessage());
+                                                alert.showAndWait();
+                                            }
+                                            else if(e.getMessage().contains("Array index out of range:"))  {
+                                                invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                alert.setHeaderText(null);
+                                                alert.setContentText(a.getMessage());
+                                                alert.showAndWait();
+                                            }
                                         }
-                                        else if(e.getMessage().contains("Array index out of range:"))  {
-                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                    		alert.setHeaderText(null);
-                                    		alert.setContentText(a.getMessage());
-                                    		alert.showAndWait();
-                                        }
-                                    }
-                                    VentanaInformacion.showing("Confirmar compra comida", "Ha comprado su comida correctamente!!", "Aceptar", 400, 100);
+                                        VentanaInformacion.showing("Confirmar compra comida", "Ha comprado su comida correctamente!!", "Aceptar", 400, 100);
 
                                 /*En caso de que el usuario no tenga los puntos suficientes, cerramos el stage, abrimos uno nuevo y
                                   mostramos una ventana de compra fallida*/
-                                } else {
-                                    primaryStage.close();
-                                    try {
-                                        start(new Stage());
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+                                    } else {
+                                        primaryStage.close();
+                                        try {
+                                            start(new Stage());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        new saldo_Exception("Saldo Insuficiente");
                                     }
-                                    new saldo_Exception("Saldo Insuficiente");
+                                }catch (Exception e) {
+                                    System.out.println("Careximba puntos");
                                 }
                             }
                         });
@@ -897,24 +899,29 @@ public class PantallaUsuario extends Application {
                                 		alert.showAndWait();
                                     }
                                 }
-                                if (Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= empleado.getPrecioDinero().get(Integer.parseInt(valoresComida[0]) - 1) * Integer.parseInt(valoresComida[1])) {
-                                    empleado.comprarComidas(Cliente.getClienteActual(), 1, Integer.parseInt(valoresComida[1]), Integer.parseInt(valoresComida[0]));
-                                    primaryStage.close();
-                                    try {
-                                        start(new Stage());
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+                                try {
+                                    if (Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= empleado.getPrecioDinero().get(Integer.parseInt(valoresComida[0]) - 1) * Integer.parseInt(valoresComida[1])) {
+                                        empleado.comprarComidas(Cliente.getClienteActual(), 1, Integer.parseInt(valoresComida[1]), Integer.parseInt(valoresComida[0]));
+                                        primaryStage.close();
+                                        try {
+                                            start(new Stage());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        VentanaInformacion.showing("Confirmar compra comida", "Ha comprado su comida correctamente!!", "Aceptar", 400, 100);
+                                    } else {
+                                        primaryStage.close();
+                                        try {
+                                            start(new Stage());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        new saldo_Exception("Saldo Insuficiente");
                                     }
-                                    VentanaInformacion.showing("Confirmar compra comida", "Ha comprado su comida correctamente!!", "Aceptar", 400, 100);
-                                } else {
-                                    primaryStage.close();
-                                    try {
-                                        start(new Stage());
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    new saldo_Exception("Saldo Insuficiente");
+                                }catch (Exception e) {
+                                    System.out.println("Careximba dinero");
                                 }
+
                             }
                         });
                     }
