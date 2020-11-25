@@ -733,7 +733,12 @@ public class PantallaUsuario extends Application {
                                                 alert.showAndWait();
                                             }
                                             else{
-                                                System.out.println("Elegir el numero de asiento mal");  ///----------------
+                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                            	invalidDataType_Exception a = new invalidDataType_Exception("Tipo de dato invalido");
+                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                        		alert.setHeaderText(null);
+                                        		alert.setContentText("Tipo de dato invalido: " + e.getMessage());
+                                        		alert.showAndWait();
                                             }
                                         }
 
@@ -756,7 +761,12 @@ public class PantallaUsuario extends Application {
                             		alert.showAndWait();
                                 }
                                 else{
-                                    System.out.println("Error en el tipo de dato de la reserva");  //------------------
+                                	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                	invalidDataType_Exception a = new invalidDataType_Exception("Tipo de dato invalido");
+                            		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                            		alert.setHeaderText(null);
+                            		alert.setContentText("Tipo de dato invalido: " + e.getMessage());
+                            		alert.showAndWait();
                                 }
                             }
 
