@@ -2,6 +2,7 @@ package InterfasGrafica;
 
 import InterfasGrafica.Ventanas.VentanaGenerica;
 import InterfasGrafica.Ventanas.VentanaInformacion;
+import ManejoExcepciones.invalidDataType_Exception;
 import ManejoExcepciones.invalidData_Exception;
 import ManejoExcepciones.saldo_Exception;
 import baseDatos.BaseDeDatos;
@@ -220,318 +221,347 @@ public class PantallaUsuario extends Application {
                         }
 
                         /*Aca conseguimos todas las salas de cine en la ciudad que el usuario ha elegido y se las mostramos*/
-                        Vector<Cine> salasXCiudad = empleado.cinesPorCiudad(Cine.getCiudades().get(Integer.parseInt(valores[0]) - 1));
-                        Label cinesPorCiudad = new Label(" Salas de cine disponibles en la ciudad:\n" + "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯  \n" + empleado.cinesPorCiudad(salasXCiudad));
-                        definirEstilo(cinesPorCiudad, 15);
-                        panelEstructura.setCenter(cinesPorCiudad);
+                        
+                        try {
+                        	Vector<Cine> salasXCiudad = empleado.cinesPorCiudad(Cine.getCiudades().get(Integer.parseInt(valores[0]) - 1));
+                        	Label cinesPorCiudad = new Label(" Salas de cine disponibles en la ciudad:\n" + "������������������������������������������  \n" + empleado.cinesPorCiudad(salasXCiudad));
+                            definirEstilo(cinesPorCiudad, 15);
+                            panelEstructura.setCenter(cinesPorCiudad);
 
-                        /*Ahora debemos crear un nuevo FieldPanel y volver a repetir el proceso
-                          para pedir los datos de la sala:'v*/
-                        String[] criteriosSala = new String[]{"Seleccione la sala deseada"};
-                        String[] valoresSala = new String[]{""};
-                        boolean[] habilitadosSala = new boolean[]{};
-                        FieldPanel sala = new FieldPanel("", criteriosSala, "", valoresSala, habilitadosSala);
+                            /*Ahora debemos crear un nuevo FieldPanel y volver a repetir el proceso
+                              para pedir los datos de la sala:'v*/
+                            String[] criteriosSala = new String[]{"Seleccione la sala deseada"};
+                            String[] valoresSala = new String[]{""};
+                            boolean[] habilitadosSala = new boolean[]{};
+                            FieldPanel sala = new FieldPanel("", criteriosSala, "", valoresSala, habilitadosSala);
 
-                        /*GridPanel auxiliar para poder centra*/
-                        GridPane auxiliarSala = centarFieldPanel(sala);
-                        panelEstructura.setBottom(auxiliarSala);
+                            /*GridPanel auxiliar para poder centra*/
+                            GridPane auxiliarSala = centarFieldPanel(sala);
+                            panelEstructura.setBottom(auxiliarSala);
 
-                        /*Ahora seguimos con la opcion de aceptar cuando igresa el usuario la ciudad*/
-                        sala.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent event) {
-                                try {
-                                    sala.GuardarDatos();
-                                } catch (Exception e) {
-                                	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                		alert.setHeaderText(null);
-                                		alert.setContentText(e.getMessage());
-                                		alert.showAndWait();
-                                    }
-                                    else if(e.getMessage().contains("Array index out of range:"))  {
-                                    	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                		alert.setHeaderText(null);
-                                		alert.setContentText(a.getMessage());
-                                		alert.showAndWait();
-                                    }
-                                }
-                                /*Mostramos la semana al usuario para que pueda elegir un dia*/
-                                Label mostrarSemana = new Label("  Ha elegio el cine " + salasXCiudad.get(Integer.parseInt(valoresSala[0]) - 1).getNombre() + "\n" + "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯" + empleado.mostrarSemana().toString());
-                                definirEstilo(mostrarSemana, 15);
-                                panelEstructura.setCenter(mostrarSemana);
-
-                                /*Creamos el nuevo FieldPanel para poder pedir el dia de la funcion*/
-                                String[] criteriosDia = new String[]{"Elija el dia que desea reservar"};
-                                String[] valoresDia = new String[]{""};
-                                boolean[] habilitadosDia = new boolean[]{};
-                                FieldPanel diaFuncion = new FieldPanel("", criteriosDia, "", valoresDia, habilitadosDia);
-
-                                /*Panel auxiliar para poder centrar lo que necesitamos*/
-                                GridPane auxiliarDia = centarFieldPanel(diaFuncion);
-                                panelEstructura.setBottom(auxiliarDia);
-
-                                /*Aca pediremos el dia*/
-                                diaFuncion.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                                    @Override
-                                    public void handle(MouseEvent event) {
-                                        try {
-                                            diaFuncion.GuardarDatos();
-                                        } catch (Exception e) {
-                                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                        		alert.setHeaderText(null);
-                                        		alert.setContentText(e.getMessage());
-                                        		alert.showAndWait();
-                                            }
-                                            else if(e.getMessage().contains("Array index out of range:"))  {
-                                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                        		alert.setHeaderText(null);
-                                        		alert.setContentText(a.getMessage());
-                                        		alert.showAndWait();
-                                            }
+                            /*Ahora seguimos con la opcion de aceptar cuando igresa el usuario la ciudad*/
+                            sala.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    try {
+                                        sala.GuardarDatos();
+                                    } catch (Exception e) {
+                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                    		alert.setHeaderText(null);
+                                    		alert.setContentText(e.getMessage());
+                                    		alert.showAndWait();
                                         }
-
-                                        /*En este vector estan guardadas todas las funciones del dia que se selecciono*/
-                                        Vector<Funcion> funcionesDia = Cliente.getClienteActual().consultarFunciones(Integer.parseInt(valoresDia[0]), salasXCiudad.get(Integer.parseInt(valoresSala[0]) - 1));
-                                        Label funcionesDelDia = new Label("Funciones del día y sus precios en\n" + "           [dinero($) || puntos(P)]\n" + "         ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" + Cliente.getClienteActual().consultarFunciones(funcionesDia).toString());
-                                        definirEstilo(funcionesDelDia, 15);
-
-                                        /*Ponemos todas las funciones del dia elegido en el centro de la escena*/
-                                        panelEstructura.setCenter(funcionesDelDia);
-
-                                        /*Definimos un nuevo FieldPanel para pedir los datos de la funcion que se quiere ver*/
-                                        String[] criteriosFuncion = new String[]{"Elija la funcion que desea"};
-                                        String[] valoresFuncion = new String[]{""};
-                                        boolean[] habilitadosFuncion = new boolean[]{};
-                                        FieldPanel funcion = new FieldPanel("", criteriosFuncion, "", valoresFuncion, habilitadosFuncion);
-                                        GridPane auxiliarFuncion = centarFieldPanel(funcion);
-
-                                        /*Centramos el FieldPanel*/
-                                        panelEstructura.setBottom(auxiliarFuncion);
-
-                                        /*Aca pediremos la informacion sobre la funcion que se desea ver*/
-                                        funcion.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                                            @Override
-                                            public void handle(MouseEvent event) {
-                                                try {
-                                                    funcion.GuardarDatos();
-                                                } catch (Exception e) {
-                                                	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                		alert.setHeaderText(null);
-                                                		alert.setContentText(e.getMessage());
-                                                		alert.showAndWait();
-                                                    }
-                                                    else if(e.getMessage().contains("Array index out of range:"))  {
-                                                    	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                                    	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                		alert.setHeaderText(null);
-                                                		alert.setContentText(a.getMessage());
-                                                		alert.showAndWait();
-                                                    }
-                                                }
-                                                /*Mostramos los asientos disponibles en el centro de la pantalla*/
-                                                Label asientos = new Label(funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1).mostrarPuestos());
-                                                definirEstilo(asientos, 15);
-                                                panelEstructura.setCenter(asientos);
-
-                                                /*Hacemos otro FieldPanel para pedir el asiento(Please stop :'v)*/
-                                                String[] criteriosPuesto = new String[]{"Elija su puesto"};
-                                                String[] valoresPuesto = new String[]{""};
-                                                boolean[] habilitadosPuesto = new boolean[]{};
-                                                FieldPanel puestoElegir = new FieldPanel("", criteriosPuesto, "", valoresPuesto, habilitadosPuesto);
-
-                                                /*Lo centramos y lo acomodamos*/
-                                                GridPane auxiliarPuesto = centarFieldPanel(puestoElegir);
-                                                panelEstructura.setBottom(auxiliarPuesto);
-
-                                                /*Aca elegiremos el dia*/
-                                                puestoElegir.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                                                    @Override
-                                                    public void handle(MouseEvent event) {
-                                                        try {
-                                                            puestoElegir.GuardarDatos();
-                                                        } catch (Exception e) {
-                                                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                        		alert.setHeaderText(null);
-                                                        		alert.setContentText(e.getMessage());
-                                                        		alert.showAndWait();
-                                                            }
-                                                            else if(e.getMessage().contains("Array index out of range:"))  {
-                                                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                        		alert.setHeaderText(null);
-                                                        		alert.setContentText(a.getMessage());
-                                                        		alert.showAndWait();
-                                                            }
-                                                        }
-                                                        /*Le mostramos al usuario su saldo*/
-                                                        Label frase = new Label("Por favor elija su medio de pago\n" + "Saldo en dinero: " + Cliente.getClienteActual().getCuentaBancaria().getSaldo() + "\n" +
-                                                                "Saldo en puntos: " + Cliente.getClienteActual().getCuentaPuntos().getPuntos());
-                                                        definirEstilo(frase, 15);
-                                                        panelEstructura.setCenter(frase);
-
-                                                        /*Mostramos al usuario los botones que corresponden a los medios de pago disponibles
-                                                         los centramos, damos margenes y estilos*/
-                                                        Button pagarDinero = new Button("Pagar con dinero");
-                                                        Button pagarPuntos = new Button("Pagar con puntos");
-                                                        GridPane menuPago = new GridPane();
-                                                        menuPago.add(pagarDinero, 0, 0);
-                                                        menuPago.add(pagarPuntos, 1, 0);
-                                                        menuPago.setVgap(8);
-                                                        menuPago.setHgap(8);
-                                                        menuPago.setAlignment(Pos.CENTER);
-                                                        definirBotones(pagarDinero);
-                                                        definirBotones(pagarPuntos);
-                                                        panelEstructura.setBottom(menuPago);
-                                                        BorderPane.setMargin(menuPago, new Insets(0, 0, 25, 0));
-
-                                                        /*Este evento se desarrola cuando el usaurio ha elegido pagar con dinero*/
-                                                        pagarDinero.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                                                            @Override
-                                                            public void handle(MouseEvent event) {
-                                                            	
-                                                                if (Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= 20000) {
-
-                                                                    /*En este vector almacenamos el numero del puesto que se ha elegido*/
-                                                                    Vector<Integer> puestoElegido = new Vector<Integer>();
-                                                                    puestoElegido.add(Integer.parseInt(valoresPuesto[0]));
-
-                                                                    /*Reservamos el puesto*/
-                                                                    Cliente.getClienteActual().reservarPuestos(puestoElegido, funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1));
-
-                                                                    /*Sacamos el dinero de la cuenta de la persona*/
-                                                                    empleado.transaccionDinero(Cliente.getClienteActual(), 20000);
-
-                                                                    /*Con esto cerramos el stage actual, lo volvemos a ejecutar desde el princio y mostramos una ventana
-                                                                     de confirmacion*/
-                                                                    primaryStage.close();
-                                                                    try {
-                                                                        start(new Stage());
-                                                                    } catch (Exception e) {
-                                                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                                    		alert.setHeaderText(null);
-                                                                    		alert.setContentText(e.getMessage());
-                                                                    		alert.showAndWait();
-                                                                        }
-                                                                        else if(e.getMessage().contains("Array index out of range:"))  {
-                                                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                                    		alert.setHeaderText(null);
-                                                                    		alert.setContentText(a.getMessage());
-                                                                    		alert.showAndWait();
-                                                                        }
-                                                                    }
-                                                                    VentanaInformacion.showing("Confirmar compra", "Reserva hecha satisfacctoriamente", "Aceptar", 400, 100);
-
-                                                                    /*En caso de que no cuente con el saldo suficiente, lo devolvemos al princio y mostramos una ventana de error*/
-                                                                } else {
-                                                                    primaryStage.close();
-                                                                    try {
-                                                                        start(new Stage());
-                                                                    } catch (Exception e) {
-                                                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                                    		alert.setHeaderText(null);
-                                                                    		alert.setContentText(e.getMessage());
-                                                                    		alert.showAndWait();
-                                                                        }
-                                                                        else if(e.getMessage().contains("Array index out of range:"))  {
-                                                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                                    		alert.setHeaderText(null);
-                                                                    		alert.setContentText(a.getMessage());
-                                                                    		alert.showAndWait();
-                                                                        }
-                                                                    }
-                                                                    
-                
-                                                                }
-                                                            }
-                                                        });
-
-                                                        /*Este evento se desarrolla cuando el usuario ha elegido pagar con puntos
-                                                          es exactamente igual al de arriba solo que ahora se sacan puntos en vez
-                                                          de dinero*/
-                                                        pagarPuntos.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                                                            @Override
-                                                            public void handle(MouseEvent event) {
-                                                                if (Cliente.getClienteActual().getCuentaPuntos().getPuntos() >= 3000) {
-                                                                    Vector<Integer> puestoElegido = new Vector<Integer>();
-                                                                    puestoElegido.add(Integer.parseInt(valoresPuesto[0]));
-                                                                    Cliente.getClienteActual().reservarPuestos(puestoElegido, funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1), true);
-                                                                    empleado.transaccionPuntos(Cliente.getClienteActual(), 3000);
-                                                                    primaryStage.close();
-                                                                    try {
-                                                                        start(new Stage());
-                                                                    } catch (Exception e) {
-                                                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                                    		alert.setHeaderText(null);
-                                                                    		alert.setContentText(e.getMessage());
-                                                                    		alert.showAndWait();
-                                                                        }
-                                                                        else if(e.getMessage().contains("Array index out of range:"))  {
-                                                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                                    		alert.setHeaderText(null);
-                                                                    		alert.setContentText(a.getMessage());
-                                                                    		alert.showAndWait();
-                                                                        }
-                                                                    }
-                                                                    VentanaInformacion.showing("Confirmar compra", "Reserva hecha satisfacctoriamente", "Aceptar", 400, 100);
-                                                                } else {
-                                                                    primaryStage.close();
-                                                                    try {
-                                                                        start(new Stage());
-                                                                    } catch (Exception e) {
-                                                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
-                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                                    		alert.setHeaderText(null);
-                                                                    		alert.setContentText(e.getMessage());
-                                                                    		alert.showAndWait();
-                                                                        }
-                                                                        else if(e.getMessage().contains("Array index out of range:"))  {
-                                                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
-                                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
-                                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
-                                                                    		alert.setHeaderText(null);
-                                                                    		alert.setContentText(a.getMessage());
-                                                                    		alert.showAndWait();
-                                                                        }
-                                                                    }
-                                                                    new saldo_Exception("Saldo Insuficiente");
-                                                                }
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                        });
+                                        else if(e.getMessage().contains("Array index out of range:"))  {
+                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                    		alert.setHeaderText(null);
+                                    		alert.setContentText(a.getMessage());
+                                    		alert.showAndWait();
+                                        }
                                     }
-                                });
+                                    /*Mostramos la semana al usuario para que pueda elegir un dia*/
+                                    Label mostrarSemana = new Label("  Ha elegio el cine " + salasXCiudad.get(Integer.parseInt(valoresSala[0]) - 1).getNombre() + "\n" + "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯" + empleado.mostrarSemana().toString());
+                                    definirEstilo(mostrarSemana, 15);
+                                    panelEstructura.setCenter(mostrarSemana);
+
+                                    /*Creamos el nuevo FieldPanel para poder pedir el dia de la funcion*/
+                                    String[] criteriosDia = new String[]{"Elija el dia que desea reservar"};
+                                    String[] valoresDia = new String[]{""};
+                                    boolean[] habilitadosDia = new boolean[]{};
+                                    FieldPanel diaFuncion = new FieldPanel("", criteriosDia, "", valoresDia, habilitadosDia);
+
+                                    /*Panel auxiliar para poder centrar lo que necesitamos*/
+                                    GridPane auxiliarDia = centarFieldPanel(diaFuncion);
+                                    panelEstructura.setBottom(auxiliarDia);
+
+                                    /*Aca pediremos el dia*/
+                                    diaFuncion.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                        @Override
+                                        public void handle(MouseEvent event) {
+                                            try {
+                                                diaFuncion.GuardarDatos();
+                                            } catch (Exception e) {
+                                            	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                            		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                            		alert.setHeaderText(null);
+                                            		alert.setContentText(e.getMessage());
+                                            		alert.showAndWait();
+                                                }
+                                                else if(e.getMessage().contains("Array index out of range:"))  {
+                                                	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                            		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                            		alert.setHeaderText(null);
+                                            		alert.setContentText(a.getMessage());
+                                            		alert.showAndWait();
+                                                }
+                                            }
+
+                                            /*En este vector estan guardadas todas las funciones del dia que se selecciono*/
+                                            Vector<Funcion> funcionesDia = Cliente.getClienteActual().consultarFunciones(Integer.parseInt(valoresDia[0]), salasXCiudad.get(Integer.parseInt(valoresSala[0]) - 1));
+                                            Label funcionesDelDia = new Label("Funciones del día y sus precios en\n" + "           [dinero($) || puntos(P)]\n" + "         ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n" + Cliente.getClienteActual().consultarFunciones(funcionesDia).toString());
+                                            definirEstilo(funcionesDelDia, 15);
+
+                                            /*Ponemos todas las funciones del dia elegido en el centro de la escena*/
+                                            panelEstructura.setCenter(funcionesDelDia);
+
+                                            /*Definimos un nuevo FieldPanel para pedir los datos de la funcion que se quiere ver*/
+                                            String[] criteriosFuncion = new String[]{"Elija la funcion que desea"};
+                                            String[] valoresFuncion = new String[]{""};
+                                            boolean[] habilitadosFuncion = new boolean[]{};
+                                            FieldPanel funcion = new FieldPanel("", criteriosFuncion, "", valoresFuncion, habilitadosFuncion);
+                                            GridPane auxiliarFuncion = centarFieldPanel(funcion);
+
+                                            /*Centramos el FieldPanel*/
+                                            panelEstructura.setBottom(auxiliarFuncion);
+
+                                            /*Aca pediremos la informacion sobre la funcion que se desea ver*/
+                                            funcion.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                                @Override
+                                                public void handle(MouseEvent event) {
+                                                    try {
+                                                        funcion.GuardarDatos();
+                                                    } catch (Exception e) {
+                                                    	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                    		alert.setHeaderText(null);
+                                                    		alert.setContentText(e.getMessage());
+                                                    		alert.showAndWait();
+                                                        }
+                                                        else if(e.getMessage().contains("Array index out of range:"))  {
+                                                        	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                        	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                    		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                    		alert.setHeaderText(null);
+                                                    		alert.setContentText(a.getMessage());
+                                                    		alert.showAndWait();
+                                                        }
+                                                    }
+                                                    /*Mostramos los asientos disponibles en el centro de la pantalla*/
+                                                    Label asientos = new Label(funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1).mostrarPuestos());
+                                                    definirEstilo(asientos, 15);
+                                                    panelEstructura.setCenter(asientos);
+
+                                                    /*Hacemos otro FieldPanel para pedir el asiento(Please stop :'v)*/
+                                                    String[] criteriosPuesto = new String[]{"Elija su puesto"};
+                                                    String[] valoresPuesto = new String[]{""};
+                                                    boolean[] habilitadosPuesto = new boolean[]{};
+                                                    FieldPanel puestoElegir = new FieldPanel("", criteriosPuesto, "", valoresPuesto, habilitadosPuesto);
+
+                                                    /*Lo centramos y lo acomodamos*/
+                                                    GridPane auxiliarPuesto = centarFieldPanel(puestoElegir);
+                                                    panelEstructura.setBottom(auxiliarPuesto);
+
+                                                    /*Aca elegiremos el dia*/
+                                                    puestoElegir.aceptar.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                                        @Override
+                                                        public void handle(MouseEvent event) {
+                                                            try {
+                                                                puestoElegir.GuardarDatos();
+                                                            } catch (Exception e) {
+                                                            	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                                	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                            		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                            		alert.setHeaderText(null);
+                                                            		alert.setContentText(e.getMessage());
+                                                            		alert.showAndWait();
+                                                                }
+                                                                else if(e.getMessage().contains("Array index out of range:"))  {
+                                                                	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                                	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                            		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                            		alert.setHeaderText(null);
+                                                            		alert.setContentText(a.getMessage());
+                                                            		alert.showAndWait();
+                                                                }
+                                                            }
+                                                            /*Le mostramos al usuario su saldo*/
+                                                            Label frase = new Label("Por favor elija su medio de pago\n" + "Saldo en dinero: " + Cliente.getClienteActual().getCuentaBancaria().getSaldo() + "\n" +
+                                                                    "Saldo en puntos: " + Cliente.getClienteActual().getCuentaPuntos().getPuntos());
+                                                            definirEstilo(frase, 15);
+                                                            panelEstructura.setCenter(frase);
+
+                                                            /*Mostramos al usuario los botones que corresponden a los medios de pago disponibles
+                                                             los centramos, damos margenes y estilos*/
+                                                            Button pagarDinero = new Button("Pagar con dinero");
+                                                            Button pagarPuntos = new Button("Pagar con puntos");
+                                                            GridPane menuPago = new GridPane();
+                                                            menuPago.add(pagarDinero, 0, 0);
+                                                            menuPago.add(pagarPuntos, 1, 0);
+                                                            menuPago.setVgap(8);
+                                                            menuPago.setHgap(8);
+                                                            menuPago.setAlignment(Pos.CENTER);
+                                                            definirBotones(pagarDinero);
+                                                            definirBotones(pagarPuntos);
+                                                            panelEstructura.setBottom(menuPago);
+                                                            BorderPane.setMargin(menuPago, new Insets(0, 0, 25, 0));
+
+                                                            /*Este evento se desarrola cuando el usaurio ha elegido pagar con dinero*/
+                                                            pagarDinero.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                                                @Override
+                                                                public void handle(MouseEvent event) {
+                                                                	
+                                                                    if (Cliente.getClienteActual().getCuentaBancaria().getSaldo() >= 20000) {
+
+                                                                        /*En este vector almacenamos el numero del puesto que se ha elegido*/
+                                                                        Vector<Integer> puestoElegido = new Vector<Integer>();
+                                                                        puestoElegido.add(Integer.parseInt(valoresPuesto[0]));
+
+                                                                        /*Reservamos el puesto*/
+                                                                        Cliente.getClienteActual().reservarPuestos(puestoElegido, funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1));
+
+                                                                        /*Sacamos el dinero de la cuenta de la persona*/
+                                                                        empleado.transaccionDinero(Cliente.getClienteActual(), 20000);
+
+                                                                        /*Con esto cerramos el stage actual, lo volvemos a ejecutar desde el princio y mostramos una ventana
+                                                                         de confirmacion*/
+                                                                        primaryStage.close();
+                                                                        try {
+                                                                            start(new Stage());
+                                                                        } catch (Exception e) {
+                                                                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                        		alert.setHeaderText(null);
+                                                                        		alert.setContentText(e.getMessage());
+                                                                        		alert.showAndWait();
+                                                                            }
+                                                                            else if(e.getMessage().contains("Array index out of range:"))  {
+                                                                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                        		alert.setHeaderText(null);
+                                                                        		alert.setContentText(a.getMessage());
+                                                                        		alert.showAndWait();
+                                                                            }
+                                                                        }
+                                                                        VentanaInformacion.showing("Confirmar compra", "Reserva hecha satisfacctoriamente", "Aceptar", 400, 100);
+
+                                                                        /*En caso de que no cuente con el saldo suficiente, lo devolvemos al princio y mostramos una ventana de error*/
+                                                                    } else {
+                                                                        primaryStage.close();
+                                                                        try {
+                                                                            start(new Stage());
+                                                                        } catch (Exception e) {
+                                                                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                        		alert.setHeaderText(null);
+                                                                        		alert.setContentText(e.getMessage());
+                                                                        		alert.showAndWait();
+                                                                            }
+                                                                            else if(e.getMessage().contains("Array index out of range:"))  {
+                                                                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                        		alert.setHeaderText(null);
+                                                                        		alert.setContentText(a.getMessage());
+                                                                        		alert.showAndWait();
+                                                                            }
+                                                                        }
+                                                                        
+                    
+                                                                    }
+                                                                }
+                                                            });
+
+                                                            /*Este evento se desarrolla cuando el usuario ha elegido pagar con puntos
+                                                              es exactamente igual al de arriba solo que ahora se sacan puntos en vez
+                                                              de dinero*/
+                                                            pagarPuntos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                                                @Override
+                                                                public void handle(MouseEvent event) {
+                                                                    if (Cliente.getClienteActual().getCuentaPuntos().getPuntos() >= 3000) {
+                                                                        Vector<Integer> puestoElegido = new Vector<Integer>();
+                                                                        puestoElegido.add(Integer.parseInt(valoresPuesto[0]));
+                                                                        Cliente.getClienteActual().reservarPuestos(puestoElegido, funcionesDia.get(Integer.parseInt(valoresFuncion[0]) - 1), true);
+                                                                        empleado.transaccionPuntos(Cliente.getClienteActual(), 3000);
+                                                                        primaryStage.close();
+                                                                        try {
+                                                                            start(new Stage());
+                                                                        } catch (Exception e) {
+                                                                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                        		alert.setHeaderText(null);
+                                                                        		alert.setContentText(e.getMessage());
+                                                                        		alert.showAndWait();
+                                                                            }
+                                                                            else if(e.getMessage().contains("Array index out of range:"))  {
+                                                                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                        		alert.setHeaderText(null);
+                                                                        		alert.setContentText(a.getMessage());
+                                                                        		alert.showAndWait();
+                                                                            }
+                                                                        }
+                                                                        VentanaInformacion.showing("Confirmar compra", "Reserva hecha satisfacctoriamente", "Aceptar", 400, 100);
+                                                                    } else {
+                                                                        primaryStage.close();
+                                                                        try {
+                                                                            start(new Stage());
+                                                                        } catch (Exception e) {
+                                                                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                        		alert.setHeaderText(null);
+                                                                        		alert.setContentText(e.getMessage());
+                                                                        		alert.showAndWait();
+                                                                            }
+                                                                            else if(e.getMessage().contains("Array index out of range:"))  {
+                                                                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                                                                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                                                                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                                                                        		alert.setHeaderText(null);
+                                                                        		alert.setContentText(a.getMessage());
+                                                                        		alert.showAndWait();
+                                                                            }
+                                                                        }
+                                                                        new saldo_Exception("Saldo Insuficiente");
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        } catch(Exception e) {
+                        	System.out.println("si funciona");
+                        	if(e.getMessage().equals("Por favor llenar todos los espacios")) {
+                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                        		alert.setHeaderText(null);
+                        		alert.setContentText(e.getMessage());
+                        		alert.showAndWait();
                             }
-                        });
+                            else if(e.getMessage().contains("Array index out of range:"))  {
+                            	invalidData_Exception a = new invalidData_Exception("La opcion ingresada no existe");
+                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                        		alert.setHeaderText(null);
+                        		alert.setContentText(a.getMessage());
+                        		alert.showAndWait();
+                            }
+                            else {
+                            	Alert alert = new Alert(Alert.AlertType.WARNING);
+                            	invalidDataType_Exception a = new invalidDataType_Exception("Tipo de dato invalido");
+                        		alert.setTitle("Manejo de Errores de la Aplicacion: Cine Stewin");
+                        		alert.setHeaderText(null);
+                        		alert.setContentText("Tipo de dato invalido: " + e.getMessage());
+                        		alert.showAndWait();
+                            }
+                        }
+                        
 
                     }
                 });

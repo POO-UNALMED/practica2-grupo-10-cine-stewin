@@ -92,6 +92,7 @@ public class FieldPanel extends Pane {
     /*Guarda los datos ingresados por el usuario y borra el
       contenido de los textfield*/
     public void GuardarDatos() throws Exception {
+    	
         GridPane grid = ((GridPane) this.getChildren().get(0));
         
         for (int i = 0; i < criterios.length; i++) {
